@@ -1,0 +1,169 @@
+.track {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 112px);
+}
+
+/* ---------- Pinned rail ---------- */
+
+.rail {
+  position: relative;
+}
+
+.railInner {
+  position: sticky;
+  top: calc(var(--nav-height) + 30vh);
+  display: flex;
+  gap: var(--space-5);
+}
+
+.line {
+  position: relative;
+  flex-shrink: 0;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--fill-strong);
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transform-origin: top;
+  transition: transform 120ms linear;
+}
+
+.railList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.railItem {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  font-size: var(--fs-callout);
+  line-height: 1.35;
+  color: var(--text-faint);
+  transition: color var(--duration) var(--ease);
+}
+
+.railItem:hover {
+  color: var(--text);
+}
+
+.railNum {
+  flex-shrink: 0;
+  width: 1.2em;
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.railItem[data-state="done"] {
+  color: var(--text-muted);
+}
+
+.railItem[data-state="current"] {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.railItem[data-state="current"] .railNum,
+.railItem[data-state="done"] .railNum {
+  color: var(--accent);
+}
+
+/* ---------- Scenes ---------- */
+
+.scenes {
+  display: flex;
+  flex-direction: column;
+}
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 4vw, 56px);
+  min-height: 100dvh;
+  padding-block: clamp(56px, 8vw, 112px);
+  scroll-margin-top: var(--nav-height);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 560px;
+}
+
+.kicker {
+  font-size: var(--fs-footnote);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.title {
+  font-size: var(--fs-display);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.body strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.visual {
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none;
+  }
+}
+
+/* ---------- Narrow screens: no rail, scenes stack ---------- */
+
+@media (max-width: 960px) {
+  .track {
+    grid-template-columns: 1fr;
+  }
+
+  .rail {
+    display: none;
+  }
+
+  .scene {
+    min-height: 0;
+    padding-block: var(--space-12);
+  }
+}
+
+/* ---------- Wide screens: words and picture side by side in each scene ---------- */
+
+@media (min-width: 1180px) {
+  .scene {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    align-items: center;
+    min-height: 92dvh;
+  }
+
+  .copy {
+    max-width: 440px;
+  }
+}

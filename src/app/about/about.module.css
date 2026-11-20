@@ -1,0 +1,122 @@
+/*
+ * About, laid out like an essay: a readable column offset into the wide
+ * container, one large typographic statement, principles as bold lead-in
+ * paragraphs beside the mascot on cream.
+ */
+
+/* ---------- Narrative column ---------- */
+
+.essay {
+  padding-block: var(--space-section);
+}
+
+/* Offset so the column starts under the page title's second third, not flush left. */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: var(--max-width-text);
+  margin-left: clamp(0px, 22vw - 120px, 320px);
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.opening {
+  color: var(--text);
+}
+
+.sectionTitle {
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-display);
+  letter-spacing: -0.03em;
+}
+
+.company {
+  margin-top: var(--space-4);
+  font-size: var(--fs-body);
+  color: var(--text-faint);
+}
+
+/* ---------- Statement ---------- */
+
+.statement {
+  padding-block: var(--space-section);
+  background: var(--bg-alt);
+}
+
+.statementText {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: clamp(1.875rem, 3.4vw + 0.5rem, 3.5rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--text-faint);
+  text-wrap: pretty;
+}
+
+.statementText strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* ---------- Beliefs, on cream ---------- */
+
+.beliefs {
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.beliefsGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.mascot {
+  width: min(500px, 100%);
+  margin-left: -6%;
+  /* Feather the render's edges so its square never shows against the section. */
+  mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
+}
+
+.beliefsCopy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-block: var(--space-section);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.beliefsCopy p {
+  max-width: 40ch;
+}
+
+.beliefsCopy strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 900px) {
+  .column {
+    margin-left: 0;
+  }
+
+  .beliefsGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mascot {
+    width: 78%;
+    margin: 0 auto -8%;
+  }
+
+  .beliefsCopy {
+    padding-top: 0;
+  }
+}

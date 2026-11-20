@@ -1,0 +1,105 @@
+/*
+ * FAQ. Two columns on wide screens: the group name sticks in the left column
+ * while its questions scroll on the right. No boxes; questions are separated
+ * by space and a hairline.
+ */
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(64px, 8vw, 112px);
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-section);
+}
+
+.group {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.groupTitle {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-8));
+  font-size: var(--fs-title1);
+  letter-spacing: -0.03em;
+}
+
+.list {
+  max-width: 760px;
+}
+
+.item + .item {
+  border-top: 1px solid var(--hairline);
+}
+
+.summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding-block: var(--space-6);
+  font-size: var(--fs-title3);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  list-style: none;
+  cursor: pointer;
+}
+
+.item:first-child .summary {
+  padding-top: var(--space-2);
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover {
+  color: var(--text-muted);
+}
+
+/* No transition: the icon flips instantly. */
+.plus {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 0.3em;
+  color: var(--text-faint);
+}
+
+.item[open] .plus {
+  transform: rotate(45deg);
+}
+
+.answer {
+  max-width: 60ch;
+  padding-bottom: var(--space-8);
+  padding-right: var(--space-10);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.more {
+  font-size: var(--fs-lead);
+  color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+  .group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .groupTitle {
+    position: static;
+    font-size: var(--fs-title2);
+  }
+
+  .answer {
+    padding-right: 0;
+  }
+}

@@ -1,0 +1,134 @@
+/* Contact. The email address is the biggest thing on the page. */
+
+.hero {
+  padding-top: calc(var(--nav-height) + clamp(48px, 7vw, 104px));
+  padding-bottom: var(--space-section);
+}
+
+.title {
+  font-size: clamp(2.75rem, 5vw + 0.75rem, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.lead {
+  max-width: 40ch;
+  margin-top: var(--space-6);
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.email {
+  display: inline-block;
+  margin-top: clamp(48px, 7vw, 96px);
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: clamp(2rem, 6vw + 0.5rem, 5.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--link);
+  overflow-wrap: anywhere;
+}
+
+.email:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.12em;
+}
+
+/* ---------- What to include ---------- */
+
+.help {
+  padding-block: var(--space-section);
+  background: var(--bg-alt);
+}
+
+.helpGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.helpTitle {
+  max-width: 14ch;
+  font-size: var(--fs-display);
+  letter-spacing: -0.03em;
+}
+
+.helpBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.note {
+  font-size: var(--fs-body);
+  color: var(--text-faint);
+}
+
+/* ---------- Data and FAQ ---------- */
+
+.more {
+  padding-block: var(--space-section);
+}
+
+.moreGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-8) clamp(32px, 6vw, 96px);
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.moreGrid p {
+  max-width: 38ch;
+}
+
+.moreGrid strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .helpGrid,
+  .moreGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Clippy waving beside the address. */
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--space-8);
+}
+
+.heroPose {
+  height: clamp(220px, 24vw, 340px);
+  width: auto;
+  margin-right: clamp(0px, 4vw, 64px);
+}
+
+@media (max-width: 760px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroPose {
+    grid-row: 1;
+    height: 160px;
+  }
+}

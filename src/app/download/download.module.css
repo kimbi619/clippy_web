@@ -1,0 +1,255 @@
+/*
+ * Download. Reads like a product page: both stores with the app on screen,
+ * set-up steps as large numerals, then two short statements. No panels.
+ */
+
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+}
+
+.sectionTitle {
+  font-size: var(--fs-display);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.lead {
+  max-width: 32ch;
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ---------- Stores ---------- */
+
+.android {
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+
+.androidGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-8);
+}
+
+.androidCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-6);
+  padding-block: var(--space-section);
+}
+
+.androidTitle {
+  max-width: 11ch;
+  font-size: var(--fs-hero);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.store {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--fs-lead);
+  color: var(--text-muted);
+}
+
+.store strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.badge {
+  display: block;
+  border-radius: 10px;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.badge:hover {
+  opacity: 0.85;
+}
+
+.badge img {
+  display: block;
+  height: 52px;
+  width: auto;
+}
+
+/* Requirements: a quiet line of text, separated by dots. */
+.reqs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+  font-size: var(--fs-callout);
+}
+
+.reqsLabel {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.reqsList {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  color: var(--text-muted);
+}
+
+.reqsList li:not(:last-child)::after {
+  content: "·";
+  margin-inline: 0.5em;
+  color: var(--text-faint);
+}
+
+/* Two phones, the front one lower; both run off the bottom of the section. */
+.androidArt {
+  position: relative;
+  min-height: 760px;
+}
+
+.androidArt [role="img"] {
+  position: absolute;
+  width: min(320px, 62%);
+}
+
+.phoneBack {
+  top: calc(var(--space-section) + 40px);
+  right: 0;
+}
+
+.androidArt .phoneFront {
+  top: calc(var(--space-section) + 180px);
+  left: 0;
+}
+
+/* ---------- Install ---------- */
+
+.install {
+  padding-block: var(--space-section);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-10) clamp(24px, 4vw, 56px);
+  margin-top: clamp(48px, 6vw, 80px);
+  list-style: none;
+}
+
+.steps li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.numeral {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: clamp(4.5rem, 7vw + 1rem, 8rem);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.after {
+  margin-top: clamp(48px, 6vw, 80px);
+  font-size: var(--fs-lead);
+  color: var(--text-muted);
+}
+
+/* ---------- Good to know ---------- */
+
+.platforms {
+  padding-block: var(--space-section);
+  background: var(--bg-alt);
+}
+
+.platformsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-16) clamp(32px, 6vw, 96px);
+}
+
+.platform {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.platform strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.platformTitle {
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-display);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.muted {
+  color: var(--text-faint);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin-top: clamp(56px, 7vw, 96px);
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 1100px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .androidGrid,
+  .platformsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .androidCopy {
+    padding-bottom: var(--space-10);
+  }
+
+  .androidArt {
+    min-height: 560px;
+  }
+
+  .androidArt [role="img"] {
+    width: min(280px, 72%);
+  }
+
+  .phoneBack {
+    top: 0;
+  }
+
+  .androidArt .phoneFront {
+    top: 120px;
+  }
+}
+
+@media (max-width: 560px) {
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}

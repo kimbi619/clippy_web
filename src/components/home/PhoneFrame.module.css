@@ -1,0 +1,343 @@
+/*
+ * Realistic device frames, drawn entirely in each phone's logical units.
+ *
+ *   --dw / --dh   device outline (display + bezel + frame), logical px
+ *   --sw / --sh   display size, logical px (iPhone pt, Pixel dp)
+ *   --px          one logical px at the rendered size  = 100cqw / --dw
+ *   --u           one mock-up unit: the display is 360 units wide, so text set
+ *                 at 14–17 units lands at the platforms' real reading sizes
+ *
+ * The device is a size container; give it any width and everything — bezels,
+ * corner radii, the island, buttons, text — scales together.
+ */
+
+.device {
+  --frame: #2b2b2e; /* outer metal band */
+  --frame-hi: #57575c; /* polished edge highlight */
+  --bezel: #050505;
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, 340px);
+  aspect-ratio: var(--dw) / var(--dh);
+  margin-inline: auto;
+  flex-shrink: 0;
+}
+
+/* ---------- Pixel 10 Pro class ---------- */
+
+.pixel {
+  --dw: 434;
+  --dh: 940;
+  --sw: 410;
+  --sh: 914;
+  --frame: #34363a; /* matte aluminium, Obsidian */
+  --frame-hi: #6a6d73;
+  --r-out: 58; /* outer corner radius */
+  --r-screen: 46;
+  --frame-w: 3.5; /* metal band */
+  --bezel-w: 8.5; /* black border around the display */
+}
+
+/* ---------- iPhone 18 Pro Max class ---------- */
+
+.iphone {
+  --dw: 462;
+  --dh: 978;
+  --sw: 440;
+  --sh: 956;
+  --frame: #3b3a38; /* titanium, Natural-dark */
+  --frame-hi: #8d8a84;
+  --r-out: 74;
+  --r-screen: 62;
+  --frame-w: 4.5;
+  --bezel-w: 6.5;
+}
+
+.device > * {
+  --px: calc(100cqw / var(--dw));
+}
+
+/* Metal frame + black bezel as two nested rounded rectangles. */
+.glass {
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--r-out) * var(--px));
+  background: var(--bezel);
+  /* Frame band, with a thin polished highlight on its outer edge. */
+  box-shadow:
+    inset 0 0 0 calc(var(--frame-w) * var(--px)) var(--frame),
+    inset 0 0 0 calc(0.8 * var(--px)) var(--frame-hi);
+}
+
+.screen {
+  --u: calc(100cqw * var(--sw) / var(--dw) / 360);
+  position: absolute;
+  inset: calc((var(--frame-w) + var(--bezel-w)) * var(--px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: calc(var(--r-screen) * var(--px));
+  background: var(--bg-alt);
+  color: var(--text);
+  font-size: calc(14 * var(--u));
+  line-height: 1.35;
+  text-align: start;
+
+  /* Site tokens re-expressed in screen units so mock-ups scale with the phone. */
+  --space-1: calc(4 * var(--u));
+  --space-2: calc(8 * var(--u));
+  --space-3: calc(12 * var(--u));
+  --space-4: calc(16 * var(--u));
+  --space-5: calc(20 * var(--u));
+  --space-6: calc(24 * var(--u));
+  --fs-caption: calc(12 * var(--u));
+  --fs-footnote: calc(13 * var(--u));
+  --fs-callout: calc(16 * var(--u));
+  --fs-title3: calc(20 * var(--u));
+  --radius-md: calc(18 * var(--u));
+  --radius-lg: calc(28 * var(--u));
+}
+
+.iphone .screen {
+  font-family: -apple-system, "SF Pro Text", var(--font-body), system-ui, sans-serif;
+}
+
+.pixel .screen {
+  font-family: var(--font-body), "Google Sans", Roboto, system-ui, sans-serif;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ---------- Status bars ---------- */
+
+.statusIos,
+.statusAndroid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* iOS: time and icons sit either side of the Dynamic Island. */
+.statusIos {
+  height: calc(54 * var(--px));
+  padding: calc(4 * var(--px)) calc(34 * var(--px)) 0 calc(48 * var(--px));
+  font-size: calc(17 * var(--px));
+  font-weight: 600;
+}
+
+.timeIos {
+  letter-spacing: -0.01em;
+}
+
+.iconsIos {
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--px));
+}
+
+.iconsIos svg {
+  height: calc(12 * var(--px));
+  width: auto;
+  fill: currentColor;
+}
+
+.iconsIos svg:last-child {
+  height: calc(13 * var(--px));
+}
+
+/* Android: smaller time on the left, Material icons on the right. */
+.statusAndroid {
+  height: calc(48 * var(--px));
+  padding: calc(6 * var(--px)) calc(28 * var(--px)) 0 calc(30 * var(--px));
+  font-size: calc(14.5 * var(--px));
+  font-weight: 500;
+}
+
+.iconsAndroid {
+  display: flex;
+  align-items: center;
+  gap: calc(4 * var(--px));
+}
+
+.iconsAndroid svg {
+  width: calc(16 * var(--px));
+  height: calc(16 * var(--px));
+  fill: currentColor;
+}
+
+/* ---------- Camera cut-outs ---------- */
+
+/* Dynamic Island: 126 × 37 pt, 11 pt from the top of the display. */
+.island {
+  position: absolute;
+  top: calc((var(--frame-w) + var(--bezel-w) + 11) * var(--px));
+  left: 50%;
+  width: calc(126 * var(--px));
+  height: calc(37 * var(--px));
+  border-radius: calc(18.5 * var(--px));
+  background: #000;
+  transform: translateX(-50%);
+}
+
+/* The front camera lens, barely visible inside the island. */
+.islandLens {
+  position: absolute;
+  top: 50%;
+  right: calc(13 * var(--px));
+  width: calc(11 * var(--px));
+  height: calc(11 * var(--px));
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #1d2a3a 0 30%, #0b0f16 60%, #050505 100%);
+  transform: translateY(-50%);
+}
+
+/* Pixel punch-hole: ~24 dp lens centred near the top edge. */
+.punchHole {
+  position: absolute;
+  top: calc((var(--frame-w) + var(--bezel-w) + 13) * var(--px));
+  left: 50%;
+  width: calc(24 * var(--px));
+  height: calc(24 * var(--px));
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #22303f 0 22%, #0a0d12 55%, #000 100%);
+  box-shadow: 0 0 0 calc(1.2 * var(--px)) #000;
+  transform: translateX(-50%);
+}
+
+/* ---------- Home indicator / gesture bar ---------- */
+
+.homeBar {
+  position: absolute;
+  bottom: calc(8 * var(--px));
+  left: 50%;
+  width: calc(140 * var(--px));
+  height: calc(5 * var(--px));
+  border-radius: calc(3 * var(--px));
+  background: var(--text);
+  opacity: 0.9;
+  transform: translateX(-50%);
+}
+
+.pixel .homeBar {
+  bottom: calc(10 * var(--px));
+  width: calc(108 * var(--px));
+  height: calc(4 * var(--px));
+  opacity: 0.75;
+}
+
+/* ---------- Hardware buttons ---------- */
+
+.buttons {
+  position: absolute;
+  inset: 0;
+}
+
+.btn {
+  position: absolute;
+  width: calc(3.2 * var(--px));
+  background: linear-gradient(90deg, var(--frame), var(--frame-hi) 55%, var(--frame));
+}
+
+.left {
+  left: calc(-2.6 * var(--px));
+  border-radius: calc(2 * var(--px)) 0 0 calc(2 * var(--px));
+}
+
+.right {
+  right: calc(-2.6 * var(--px));
+  border-radius: 0 calc(2 * var(--px)) calc(2 * var(--px)) 0;
+}
+
+/* iPhone: action button, volume up/down on the left; side button and Camera Control on the right. */
+.action {
+  top: calc(176 * var(--px));
+  height: calc(34 * var(--px));
+}
+
+.volUp {
+  top: calc(252 * var(--px));
+  height: calc(64 * var(--px));
+}
+
+.volDown {
+  top: calc(334 * var(--px));
+  height: calc(64 * var(--px));
+}
+
+.side {
+  top: calc(276 * var(--px));
+  height: calc(104 * var(--px));
+}
+
+/* Camera Control sits almost flush, a sapphire strip inside the frame. */
+.cameraControl {
+  top: calc(560 * var(--px));
+  height: calc(74 * var(--px));
+  right: calc(-1.2 * var(--px));
+  width: calc(1.8 * var(--px));
+  background: linear-gradient(90deg, #1a1a1c, #4a4a4f);
+}
+
+/* Pixel: power above the volume rocker, both on the right. */
+.power {
+  top: calc(206 * var(--px));
+  height: calc(70 * var(--px));
+}
+
+.rocker {
+  top: calc(312 * var(--px));
+  height: calc(136 * var(--px));
+}
+
+/* ---------- Dark mode: lighter metal so the outline reads on black ---------- */
+
+@media (prefers-color-scheme: dark) {
+  .pixel {
+    --frame: #4a4c51;
+    --frame-hi: #8a8d93;
+  }
+
+  .iphone {
+    --frame: #55534f;
+    --frame-hi: #a19d96;
+  }
+}
+
+/* ---------- Platform back control ---------- */
+
+.back,
+.backIos,
+.backAndroid {
+  display: inline-flex;
+  align-items: center;
+}
+
+.backIos {
+  gap: calc(6 * var(--u, 1px));
+}
+
+.backIos svg {
+  width: calc(9 * var(--u, 1px));
+  height: calc(15 * var(--u, 1px));
+}
+
+.backAndroid {
+  color: var(--text);
+}
+
+.backAndroid svg {
+  width: calc(26 * var(--u, 1px));
+  height: calc(26 * var(--u, 1px));
+}
+
+.pixel .backIos,
+.iphone .backAndroid {
+  display: none;
+}

@@ -1,0 +1,162 @@
+/*
+ * Privacy overview. Each principle is one very large sentence and one short
+ * paragraph on a full-bleed tone; the paragraph sits in the right half on wide
+ * screens so the page reads as a sequence of statements, not a grid.
+ */
+
+/* ---------- Principle statements ---------- */
+
+.principle {
+  padding-block: var(--space-section);
+}
+
+.alt {
+  background: var(--bg-alt);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  row-gap: clamp(28px, 4vw, 48px);
+  column-gap: var(--space-8);
+}
+
+.title {
+  grid-column: 1 / span 10;
+  max-width: 15ch;
+  font-size: clamp(2.5rem, 5.4vw + 0.5rem, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.body {
+  grid-column: 7 / span 6;
+  max-width: 36ch;
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+/* The one black section. Fixed colours: it is black in both themes. */
+.stage {
+  background: #000000;
+  color: #f5f5f7;
+}
+
+.stageTitle {
+  color: #f5f5f7;
+}
+
+.stageBody {
+  color: #a1a1a6;
+}
+
+/* ---------- Linked WhatsApp, on cream with the mascot ---------- */
+
+.linked {
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.linkedGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.linkedCopy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-block: var(--space-section);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.linkedCopy p {
+  max-width: 34ch;
+}
+
+.linkedCopy strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.linkedTitle {
+  max-width: 13ch;
+  font-size: var(--fs-display);
+  letter-spacing: -0.03em;
+}
+
+.mascot {
+  width: min(480px, 100%);
+  justify-self: end;
+  /* Feather the render's edges so its square never shows against the section. */
+  mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
+}
+
+/* ---------- Honest about AI ---------- */
+
+.honest {
+  padding-block: var(--space-section);
+}
+
+.honestGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.honestTitle {
+  font-size: var(--fs-display);
+  letter-spacing: -0.03em;
+}
+
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 40em;
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.prose strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-8);
+  font-size: var(--fs-body);
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 900px) {
+  .title,
+  .body {
+    grid-column: 1 / -1;
+  }
+
+  .linkedGrid,
+  .honestGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .linkedCopy {
+    padding-bottom: 0;
+  }
+
+  .mascot {
+    width: 78%;
+    justify-self: center;
+    margin-bottom: -6%;
+  }
+}

@@ -1,0 +1,265 @@
+/*
+ * How it works. A walk-through with Clippy as the guide: a cream hero where it
+ * waves hello, four step scenes (phone + Clippy side by side) with a pinned
+ * progress rail, then what happens after the call and between calls.
+ */
+
+.sectionTitle {
+  font-size: var(--fs-display);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: end;
+  gap: var(--space-8);
+  padding-top: calc(var(--nav-height) + clamp(40px, 6vw, 88px));
+}
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+  align-self: center;
+}
+
+.heroTitle {
+  max-width: 13ch;
+  font-size: clamp(2.75rem, 4.8vw + 0.5rem, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.heroLead {
+  max-width: 38ch;
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.heroPose {
+  justify-self: center;
+  width: min(330px, 70%);
+  margin-bottom: var(--space-8);
+}
+
+/* The four steps at a glance: big numerals, plain links, no boxes. */
+.overview {
+  padding-block: clamp(40px, 5vw, 64px) clamp(48px, 6vw, 80px);
+}
+
+.overview ol {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-6);
+}
+
+.overview a {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--fs-callout);
+  font-weight: 500;
+  color: var(--text);
+}
+
+.overview a:hover {
+  color: var(--accent);
+}
+
+.overviewNum {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: clamp(2.5rem, 3vw + 1rem, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Step scenes ---------- */
+
+.steps {
+  padding-block: var(--space-8) var(--space-section);
+}
+
+/* Phone and Clippy side by side on one baseline; Clippy steps in front of the phone's edge. */
+.duo {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.flip {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.phone {
+  width: min(300px, 62%);
+  margin-inline: 0;
+}
+
+.poseRight,
+.poseLeft {
+  position: relative;
+  z-index: 2;
+  width: auto;
+  height: 340px;
+  max-height: 46vw;
+}
+
+.poseRight {
+  margin-left: -40px;
+}
+
+.poseLeft {
+  margin-right: -40px;
+}
+
+/* ---------- After the call ---------- */
+
+.after {
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+
+.afterGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 6vw, 96px);
+}
+
+/* Phone cut off by the bottom of the section; Clippy celebrating beside it. */
+.afterArt {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  align-self: stretch;
+  padding-top: var(--space-section);
+  margin-bottom: -140px;
+}
+
+.afterPhone {
+  width: min(320px, 64%);
+  margin-inline: 0;
+}
+
+.afterPose {
+  position: relative;
+  z-index: 2;
+  height: 300px;
+  margin-left: -48px;
+  margin-bottom: 160px;
+}
+
+.afterCopy,
+.betweenCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding-block: var(--space-section);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.afterCopy h2,
+.betweenCopy h2 {
+  margin-bottom: var(--space-2);
+}
+
+.afterCopy strong,
+.betweenCopy strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---------- Between calls ---------- */
+
+.between {
+  position: relative;
+  z-index: 1;
+  background: var(--cream);
+}
+
+.betweenGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(32px, 6vw, 96px);
+}
+
+.betweenPose {
+  justify-self: center;
+  width: min(250px, 60%);
+  margin-bottom: var(--space-section);
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 900px) {
+  .heroGrid,
+  .afterGrid,
+  .betweenGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroPose {
+    width: min(220px, 55%);
+    margin-bottom: 0;
+  }
+
+  .overview ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-8);
+  }
+
+  .poseRight,
+  .poseLeft {
+    height: 230px;
+  }
+
+  .poseRight {
+    margin-left: -56px;
+  }
+
+  .poseLeft {
+    margin-right: -56px;
+  }
+
+  .afterArt {
+    order: 2;
+    padding-top: 0;
+  }
+
+  .afterCopy {
+    padding-bottom: var(--space-10);
+  }
+
+  .afterPose {
+    height: 200px;
+    margin-bottom: 150px;
+  }
+
+  .betweenCopy {
+    padding-bottom: 0;
+  }
+
+  .betweenPose {
+    width: min(180px, 50%);
+    margin-block: var(--space-8) var(--space-12);
+  }
+}

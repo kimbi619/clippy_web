@@ -1,0 +1,104 @@
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 96px);
+}
+
+/* ---------- Pinned phone (wide screens) ---------- */
+
+.stage {
+  position: relative;
+}
+
+.stageInner {
+  --stage-h: min(720px, calc(100dvh - var(--nav-height) - 64px));
+  position: sticky;
+  top: calc(var(--nav-height) + (100dvh - var(--nav-height) - var(--stage-h)) / 2);
+  display: grid;
+  height: var(--stage-h);
+}
+
+.screen {
+  grid-area: 1 / 1;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 240ms var(--ease);
+}
+
+.stage .screen > * {
+  /* Size the phone from the available height so it always fits the viewport. */
+  width: calc(var(--stage-h) * 434 / 940);
+  max-width: 100%;
+}
+
+.current {
+  opacity: 1;
+}
+
+/* ---------- Chapters ---------- */
+
+.chapter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-5);
+  min-height: 88dvh;
+  max-width: 460px;
+}
+
+.title {
+  font-size: var(--fs-display);
+  line-height: 1.05;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.body strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.inlineScreen {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen {
+    transition: none;
+  }
+}
+
+/* ---------- Narrow screens: no pinning, screen under each chapter ---------- */
+
+@media (max-width: 900px) {
+  .story {
+    grid-template-columns: 1fr;
+  }
+
+  .stage {
+    display: none;
+  }
+
+  .chapter {
+    min-height: 0;
+    max-width: none;
+    padding-block: var(--space-12);
+  }
+
+  .inlineScreen {
+    display: block;
+    margin-top: var(--space-6);
+  }
+
+  .chapter .inlineScreen > * {
+    width: min(100%, 320px);
+  }
+}

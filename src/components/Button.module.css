@@ -1,0 +1,69 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration) var(--ease),
+    opacity var(--duration) var(--ease);
+}
+
+.md {
+  min-height: 40px;
+  padding: 8px 20px;
+  font-size: var(--fs-callout);
+}
+
+.lg {
+  min-height: 52px;
+  padding: 12px 28px;
+  font-size: 1.0625rem;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.primary:hover {
+  background: var(--accent-hover);
+}
+
+.secondary {
+  background: var(--fill);
+  color: var(--text);
+}
+
+.secondary:hover {
+  background: var(--fill-strong);
+}
+
+.plain {
+  min-height: 0;
+  padding: 0;
+  color: var(--link);
+  border-radius: 4px;
+}
+
+.plain:hover span {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.chevron {
+  width: 7px;
+  height: 12px;
+}
+
+.button:active {
+  opacity: 0.85;
+}
+
+.button svg:not(.chevron) {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}

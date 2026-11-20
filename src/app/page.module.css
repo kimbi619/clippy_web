@@ -1,0 +1,391 @@
+/*
+ * Home. Few containers: content sits on full-bleed tonal sections (cream,
+ * white, black, grey), hierarchy comes from type size and space, and the
+ * product pictures are large enough to carry each section on their own.
+ */
+
+/* ---------- Hero ---------- */
+
+.hero {
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-8);
+  min-height: min(880px, 100dvh);
+}
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+  padding-block: calc(var(--nav-height) + var(--space-12)) var(--space-16);
+}
+
+.heroTitle {
+  font-size: clamp(2.75rem, 4.6vw + 0.5rem, 5.25rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.heroLead {
+  max-width: 30ch;
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* Mascot behind, phone in front and cut off by the bottom of the section. */
+.heroArt {
+  position: relative;
+  align-self: stretch;
+  min-height: 640px;
+}
+
+.heroMascot,
+.controlMascot {
+  /* Feather the render's edges so its square never shows against the section. */
+  mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
+}
+
+.heroMascot {
+  position: absolute;
+  top: calc(var(--nav-height) + 2%);
+  right: -6%;
+  width: min(560px, 100%);
+}
+
+.heroPhone {
+  position: absolute;
+  left: 4%;
+  bottom: -180px;
+  width: 300px;
+}
+
+/* ---------- Statement ---------- */
+
+.statement {
+  padding-block: var(--space-section);
+}
+
+.statementText {
+  max-width: calc(1080px + var(--gutter) * 2);
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: clamp(1.875rem, 3.4vw + 0.5rem, 3.5rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--text-faint);
+  text-wrap: pretty;
+}
+
+.statementText strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.statementAside {
+  color: var(--accent);
+}
+
+/* ---------- Scrolling story ---------- */
+
+.story {
+  padding-bottom: var(--space-section);
+}
+
+/* ---------- Dark stage ---------- */
+
+.stage {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--space-section);
+  background: #000000;
+  color: #f5f5f7;
+}
+
+.stage h2 {
+  color: #f5f5f7;
+}
+
+.stageTitle {
+  font-size: var(--fs-hero);
+  letter-spacing: -0.035em;
+}
+
+.stageLead {
+  max-width: 34ch;
+  margin-top: var(--space-5);
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: #a1a1a6;
+}
+
+.dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+  margin-top: clamp(56px, 8vw, 112px);
+}
+
+.dialogueCaption {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-footnote);
+  color: #a1a1a6;
+}
+
+.liveDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff453a;
+}
+
+.utterance {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 900px;
+}
+
+.speaker {
+  font-size: var(--fs-callout);
+  font-weight: 600;
+  color: #a1a1a6;
+}
+
+.said {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: clamp(1.75rem, 3.6vw + 0.5rem, 3.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: #f5f5f7;
+  text-wrap: balance;
+}
+
+.reply {
+  align-self: flex-end;
+  text-align: right;
+}
+
+.reply .speaker {
+  color: #3dd598;
+}
+
+.reply .said {
+  color: #3dd598;
+}
+
+/* ---------- The app ---------- */
+
+.app {
+  padding-block: var(--space-section) 0;
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+
+.appHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: var(--space-8);
+}
+
+.sectionTitle {
+  font-size: var(--fs-display);
+  letter-spacing: -0.03em;
+}
+
+.sectionLead {
+  max-width: 44ch;
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* Three phones, the middle one raised; all cut off by the section's bottom edge. */
+.phones {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 3vw, 48px);
+  margin-top: clamp(56px, 7vw, 96px);
+  margin-bottom: -120px;
+}
+
+.phoneItem {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: 80px;
+}
+
+.phoneItem figcaption {
+  font-size: var(--fs-footnote);
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+.phoneRaised {
+  padding-top: 0;
+}
+
+/* ---------- Control ---------- */
+
+.control {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.controlGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.controlMascot {
+  width: min(520px, 100%);
+  margin-left: -6%;
+}
+
+.controlCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding-block: var(--space-16);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.controlCopy h2 {
+  margin-bottom: var(--space-2);
+}
+
+.controlCopy strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---------- Closing ---------- */
+
+.closing {
+  padding-block: var(--space-section);
+}
+
+.closingInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.closingCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+/* The real app icon, shown the way a phone shows it. */
+.appIcon {
+  width: clamp(140px, 18vw, 240px);
+  height: auto;
+  border-radius: 22.5%;
+}
+
+.closingTitle {
+  max-width: 12ch;
+  font-size: var(--fs-hero);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+.closingLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 900px) {
+  .heroGrid,
+  .appHead,
+  .controlGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroGrid {
+    min-height: 0;
+  }
+
+  .heroCopy {
+    padding-bottom: 0;
+  }
+
+  .heroArt {
+    min-height: 520px;
+  }
+
+  .heroMascot {
+    top: 0;
+    right: -10%;
+    width: 78%;
+  }
+
+  .heroPhone {
+    left: 0;
+    bottom: -200px;
+    width: 260px;
+  }
+
+  .phones {
+    grid-template-columns: minmax(0, 300px);
+    justify-content: center;
+  }
+
+  /* One phone is enough on a phone. */
+  .phoneItem:not(.phoneRaised) {
+    display: none;
+  }
+
+  .phoneItem {
+    padding-top: 0;
+  }
+
+  .controlMascot {
+    width: 80%;
+    margin: 0 auto -8%;
+  }
+
+  .controlCopy {
+    padding-top: 0;
+  }
+
+  .closingInner {
+    grid-template-columns: 1fr;
+  }
+
+  .appIcon {
+    grid-row: 1;
+    width: 96px;
+  }
+
+  .reply {
+    text-align: left;
+    align-self: flex-start;
+  }
+}

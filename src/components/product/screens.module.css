@@ -1,0 +1,312 @@
+/*
+ * Phone screens for the product pages. Same flat language as the home
+ * mock-ups: grey screen, white grouped surfaces, no borders or shadows,
+ * colours from the site tokens so they follow light and dark mode.
+ */
+
+/* ---------- Avatars ---------- */
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: calc(28 * var(--u, 1px));
+  height: calc(28 * var(--u, 1px));
+  overflow: hidden;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: calc(12 * var(--u, 1px));
+  font-weight: 600;
+  line-height: 1;
+}
+
+.avatarMd {
+  width: calc(40 * var(--u, 1px));
+  height: calc(40 * var(--u, 1px));
+  font-size: calc(16 * var(--u, 1px));
+}
+
+.avatarClippy {
+  background: #fceee1;
+}
+
+.avatarClippy img {
+  width: 100%;
+  height: 100%;
+}
+
+.amber {
+  background: #a65716;
+}
+
+.rose {
+  background: #b83d64;
+}
+
+.teal {
+  background: #1f7a8c;
+}
+
+.slate {
+  background: #5f6b7a;
+}
+
+/* ---------- Screen scaffolding ---------- */
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: calc(12 * var(--u, 1px));
+  min-height: 0;
+  padding: calc(4 * var(--u, 1px)) calc(16 * var(--u, 1px)) calc(16 * var(--u, 1px));
+  overflow: hidden;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(6 * var(--u, 1px));
+  color: var(--accent);
+  font-size: calc(15 * var(--u, 1px));
+}
+
+.back svg {
+  width: calc(9 * var(--u, 1px));
+  height: calc(15 * var(--u, 1px));
+}
+
+.title,
+.largeTitle,
+.sheetTitle {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.title {
+  font-size: calc(22 * var(--u, 1px));
+}
+
+.largeTitle {
+  font-size: calc(28 * var(--u, 1px));
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(4 * var(--u, 1px)) calc(12 * var(--u, 1px));
+  margin-top: calc(4 * var(--u, 1px));
+  color: var(--text-faint);
+  font-size: calc(13 * var(--u, 1px));
+}
+
+.caption {
+  color: var(--text-faint);
+  font-size: calc(13 * var(--u, 1px));
+}
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(5 * var(--u, 1px));
+  color: var(--live);
+  font-weight: 600;
+}
+
+.liveDot {
+  width: calc(7 * var(--u, 1px));
+  height: calc(7 * var(--u, 1px));
+  border-radius: 50%;
+  background: var(--live);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: calc(14 * var(--u, 1px));
+  padding: calc(14 * var(--u, 1px));
+  border-radius: calc(14 * var(--u, 1px));
+  background: var(--surface);
+}
+
+/* ---------- Transcript ---------- */
+
+.line {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(10 * var(--u, 1px));
+}
+
+.lineBody {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--u, 1px));
+  min-width: 0;
+}
+
+.lineMeta {
+  display: flex;
+  align-items: baseline;
+  gap: calc(8 * var(--u, 1px));
+  color: var(--text-faint);
+  font-size: calc(12 * var(--u, 1px));
+}
+
+.lineName {
+  color: var(--text);
+  font-size: calc(14 * var(--u, 1px));
+  font-weight: 600;
+}
+
+.mention {
+  background: none;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u, 1px));
+  margin-inline: -6px;
+  padding: calc(10 * var(--u, 1px)) calc(6 * var(--u, 1px));
+  border-radius: calc(12 * var(--u, 1px));
+  background: var(--accent-soft);
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--u, 1px));
+  padding-inline-start: calc(38 * var(--u, 1px));
+  color: var(--accent);
+  font-size: calc(12 * var(--u, 1px));
+  font-weight: 500;
+}
+
+.note svg {
+  width: calc(16 * var(--u, 1px));
+  height: calc(16 * var(--u, 1px));
+}
+
+.callHead {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u, 1px));
+}
+
+.callHead .meta {
+  margin-top: calc(2 * var(--u, 1px));
+}
+
+/* ---------- Lists ---------- */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u, 1px));
+}
+
+.rowText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rowTitle {
+  font-weight: 600;
+}
+
+.rowSub {
+  color: var(--text-faint);
+  font-size: calc(12 * var(--u, 1px));
+}
+
+.check {
+  color: var(--accent);
+}
+
+.check svg {
+  width: calc(18 * var(--u, 1px));
+  height: calc(18 * var(--u, 1px));
+}
+
+.addRow {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ---------- WhatsApp call with the Add participant sheet ---------- */
+
+.callTop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(4 * var(--u, 1px));
+  padding: calc(12 * var(--u, 1px)) calc(16 * var(--u, 1px)) calc(24 * var(--u, 1px));
+  text-align: center;
+}
+
+.callPeople {
+  display: flex;
+  gap: calc(8 * var(--u, 1px));
+  margin-top: calc(14 * var(--u, 1px));
+}
+
+.sheet {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: calc(12 * var(--u, 1px));
+  padding: calc(8 * var(--u, 1px)) calc(16 * var(--u, 1px)) calc(16 * var(--u, 1px));
+  border-radius: calc(20 * var(--u, 1px)) calc(20 * var(--u, 1px)) 0 0;
+  background: var(--surface);
+}
+
+.grabber {
+  width: calc(36 * var(--u, 1px));
+  height: calc(5 * var(--u, 1px));
+  margin: 0 auto calc(4 * var(--u, 1px));
+  border-radius: calc(3 * var(--u, 1px));
+  background: var(--fill-strong);
+}
+
+.sheetTitle {
+  font-size: calc(18 * var(--u, 1px));
+  text-align: center;
+}
+
+.search {
+  padding: calc(8 * var(--u, 1px)) calc(12 * var(--u, 1px));
+  border-radius: calc(10 * var(--u, 1px));
+  background: var(--fill);
+  color: var(--text-faint);
+  font-size: calc(13 * var(--u, 1px));
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--u, 1px));
+  padding-top: calc(4 * var(--u, 1px));
+}
+
+.rowPicked {
+  margin-inline: -8px;
+  padding: calc(8 * var(--u, 1px));
+  border-radius: calc(12 * var(--u, 1px));
+  background: var(--accent-soft);
+}
+
+.addPill {
+  padding: calc(4 * var(--u, 1px)) calc(14 * var(--u, 1px));
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: calc(13 * var(--u, 1px));
+  font-weight: 600;
+}

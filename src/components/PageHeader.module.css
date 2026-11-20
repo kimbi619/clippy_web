@@ -1,0 +1,49 @@
+/* Editorial page opening: left-aligned, very large title, short lead. */
+.header {
+  padding-top: calc(var(--nav-height) + clamp(48px, 7vw, 104px));
+  padding-bottom: clamp(48px, 6vw, 88px);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.title {
+  max-width: 14ch;
+  font-size: clamp(2.75rem, 5vw + 0.75rem, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.lead {
+  max-width: 40ch;
+}
+
+/* With Clippy: title block left, the pose standing on the right, bottoms aligned. */
+.withPose {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--space-8);
+}
+
+.pose {
+  width: auto;
+  height: clamp(200px, 22vw, 320px);
+  margin-right: clamp(0px, 4vw, 64px);
+}
+
+@media (max-width: 760px) {
+  .withPose {
+    grid-template-columns: 1fr;
+  }
+
+  .pose {
+    grid-row: 1;
+    height: 160px;
+    margin: 0 0 var(--space-2);
+  }
+}

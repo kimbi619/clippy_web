@@ -1,0 +1,513 @@
+/*
+ * Mock-up styling. Flat surfaces, no borders or shadows. Cards read their
+ * fill from --card, which the page sets per section (grey card on a white
+ * section, white card on a grey one).
+ */
+
+/* ---------- Avatars ---------- */
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: calc(36 * var(--u, 1px));
+  height: calc(36 * var(--u, 1px));
+  overflow: hidden;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: calc(15 * var(--u, 1px));
+  font-weight: 600;
+  line-height: 1;
+}
+
+.avatarSm {
+  width: calc(28 * var(--u, 1px));
+  height: calc(28 * var(--u, 1px));
+  font-size: calc(12 * var(--u, 1px));
+}
+
+.avatarClippy {
+  background: #fceee1;
+}
+
+.avatarClippy img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Speaker colours: mid-tone so white initials pass contrast in both themes. */
+.amber {
+  background: #a65716;
+}
+
+.rose {
+  background: #b83d64;
+}
+
+.teal {
+  background: #1f7a8c;
+}
+
+.slate {
+  background: #5f6b7a;
+}
+
+/* ---------- Live indicator ---------- */
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(5 * var(--u, 1px));
+  color: var(--live);
+  font-weight: 600;
+}
+
+.liveDot {
+  width: calc(7 * var(--u, 1px));
+  height: calc(7 * var(--u, 1px));
+  border-radius: 50%;
+  background: var(--live);
+}
+
+/* ---------- Phone screen content ---------- */
+
+.screenBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: calc(12 * var(--u, 1px));
+  min-height: 0;
+  padding: calc(4 * var(--u, 1px)) calc(16 * var(--u, 1px)) calc(16 * var(--u, 1px));
+  overflow: hidden;
+}
+
+.navBack {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(6 * var(--u, 1px));
+  color: var(--accent);
+  font-size: calc(15 * var(--u, 1px));
+}
+
+.navBack svg {
+  width: calc(9 * var(--u, 1px));
+  height: calc(15 * var(--u, 1px));
+}
+
+.screenTitleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--u, 1px));
+}
+
+.screenTitle,
+.largeTitle {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.screenTitle {
+  font-size: calc(24 * var(--u, 1px));
+}
+
+.largeTitle {
+  margin-top: calc(6 * var(--u, 1px));
+  font-size: calc(28 * var(--u, 1px));
+}
+
+.screenMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(4 * var(--u, 1px)) calc(12 * var(--u, 1px));
+  color: var(--text-faint);
+  font-size: calc(13 * var(--u, 1px));
+}
+
+.people {
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--u, 1px));
+}
+
+.peopleNote {
+  margin-inline-start: calc(4 * var(--u, 1px));
+  color: var(--text-faint);
+  font-size: calc(12 * var(--u, 1px));
+}
+
+.sectionLabel {
+  margin-top: calc(4 * var(--u, 1px));
+  color: var(--text-faint);
+  font-size: calc(13 * var(--u, 1px));
+}
+
+/* Grouped list: one rounded surface, rows separated by space, not lines. */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: calc(14 * var(--u, 1px));
+  padding: calc(14 * var(--u, 1px));
+  border-radius: calc(14 * var(--u, 1px));
+  background: var(--surface);
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(12 * var(--u, 1px));
+}
+
+.row > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--u, 1px));
+  min-width: 0;
+}
+
+.rowTime {
+  flex-shrink: 0;
+  width: calc(44 * var(--u, 1px));
+  color: var(--accent);
+  font-size: calc(13 * var(--u, 1px));
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.rowTitle {
+  font-weight: 600;
+}
+
+.rowSub {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u, 1px));
+  color: var(--text-faint);
+  font-size: calc(12 * var(--u, 1px));
+}
+
+.rowSubWave {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u, 1px));
+  color: var(--text-faint);
+  font-size: calc(12 * var(--u, 1px));
+}
+
+.rowSubWave .waveform {
+  height: calc(18 * var(--u, 1px));
+  gap: calc(1.5 * var(--u, 1px));
+}
+
+.rowSubWave .waveform > span {
+  width: calc(2 * var(--u, 1px));
+  max-height: calc(16 * var(--u, 1px));
+}
+
+.rowText {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: calc(13 * var(--u, 1px));
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(8 * var(--u, 1px));
+}
+
+.shots span {
+  aspect-ratio: 9 / 16;
+  border-radius: calc(10 * var(--u, 1px));
+  /* A thumbnail of a screen: a title bar and a few text lines, drawn flat. */
+  background:
+    linear-gradient(var(--fill-strong), var(--fill-strong)) calc(10 * var(--u, 1px)) calc(14 * var(--u, 1px)) / 55% calc(6 * var(--u, 1px)) no-repeat,
+    linear-gradient(var(--fill), var(--fill)) calc(10 * var(--u, 1px)) calc(30 * var(--u, 1px)) / 75% calc(4 * var(--u, 1px)) no-repeat,
+    linear-gradient(var(--fill), var(--fill)) calc(10 * var(--u, 1px)) calc(40 * var(--u, 1px)) / 65% calc(4 * var(--u, 1px)) no-repeat,
+    linear-gradient(var(--fill), var(--fill)) calc(10 * var(--u, 1px)) calc(50 * var(--u, 1px)) / 70% calc(4 * var(--u, 1px)) no-repeat,
+    linear-gradient(var(--accent-soft), var(--accent-soft)) calc(10 * var(--u, 1px)) calc(100% - calc(16 * var(--u, 1px))) / calc(100% - calc(20 * var(--u, 1px))) calc(18 * var(--u, 1px)) no-repeat,
+    var(--surface);
+}
+
+.tabBar {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-around;
+  padding: calc(12 * var(--u, 1px)) calc(16 * var(--u, 1px)) calc(26 * var(--u, 1px));
+  background: var(--surface);
+  color: var(--text-faint);
+  font-size: calc(12 * var(--u, 1px));
+  font-weight: 500;
+}
+
+.tabActive {
+  color: var(--accent);
+}
+
+/* ---------- Transcript lines ---------- */
+
+.line {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(10 * var(--u, 1px));
+}
+
+.lineBody {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--u, 1px));
+  min-width: 0;
+}
+
+.lineMeta {
+  display: flex;
+  align-items: baseline;
+  gap: calc(8 * var(--u, 1px));
+}
+
+.lineName {
+  font-weight: 600;
+}
+
+.lineTime {
+  color: var(--text-faint);
+  font-size: calc(12 * var(--u, 1px));
+  font-variant-numeric: tabular-nums;
+}
+
+.partial {
+  color: var(--text-faint);
+}
+
+.partial::after {
+  content: "";
+  display: inline-block;
+  width: calc(2 * var(--u, 1px));
+  height: 1em;
+  margin-inline-start: calc(2 * var(--u, 1px));
+  vertical-align: -0.15em;
+  background: var(--accent);
+}
+
+/* ---------- Flat cards ---------- */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+  max-width: calc(460 * var(--u, 1px));
+  margin-inline: auto;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--card, var(--surface-alt));
+  font-size: var(--fs-callout);
+  line-height: 1.45;
+  text-align: start;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--u, 1px));
+  color: var(--text-faint);
+  font-size: var(--fs-footnote);
+}
+
+.cardTitle {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: var(--fs-title3);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.muted {
+  color: var(--text-faint);
+  font-size: var(--fs-footnote);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.mention {
+  background: none;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+}
+
+.spoken,
+.checked {
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--u, 1px));
+  color: var(--accent);
+  font-size: var(--fs-footnote);
+  font-weight: 500;
+}
+
+.spoken svg,
+.checked svg {
+  width: calc(16 * var(--u, 1px));
+  height: calc(16 * var(--u, 1px));
+}
+
+.summaryHead {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--u, 1px));
+}
+
+.summarySection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  color: var(--text-faint);
+  font-size: var(--fs-footnote);
+  font-weight: 600;
+}
+
+.todo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.todo li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ---------- Chat ---------- */
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.chatName {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.bubble {
+  display: flex;
+  flex-direction: column;
+  gap: calc(6 * var(--u, 1px));
+  max-width: 85%;
+  padding: calc(10 * var(--u, 1px)) calc(14 * var(--u, 1px)) calc(8 * var(--u, 1px));
+  border-radius: calc(18 * var(--u, 1px));
+}
+
+.out {
+  align-self: flex-end;
+  border-end-end-radius: calc(6 * var(--u, 1px));
+  background: var(--accent-soft);
+}
+
+.in {
+  align-self: flex-start;
+  border-end-start-radius: calc(6 * var(--u, 1px));
+  background: var(--fill);
+}
+
+.forwarded {
+  color: var(--text-faint);
+  font-size: var(--fs-caption);
+  font-style: italic;
+}
+
+.bubbleMeta {
+  display: flex;
+  gap: var(--space-4);
+  color: var(--text-faint);
+  font-size: var(--fs-caption);
+}
+
+.bubbleMeta > span:last-child {
+  margin-inline-start: auto;
+}
+
+.quote {
+  color: var(--text-muted);
+}
+
+.voice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.play {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: calc(32 * var(--u, 1px));
+  height: calc(32 * var(--u, 1px));
+  color: var(--accent);
+}
+
+.play svg {
+  width: calc(22 * var(--u, 1px));
+  height: calc(22 * var(--u, 1px));
+}
+
+.waveform {
+  display: flex;
+  align-items: center;
+  gap: calc(2 * var(--u, 1px));
+  height: calc(28 * var(--u, 1px));
+  min-width: 0;
+  overflow: hidden;
+}
+
+.waveform > span {
+  flex-shrink: 0;
+  width: calc(3 * var(--u, 1px));
+  border-radius: calc(2 * var(--u, 1px));
+  background: var(--text-faint);
+  opacity: 0.55;
+}
+
+.waveform > .barPlayed {
+  background: var(--accent);
+  opacity: 1;
+}
+
+/* Chat inside a phone screen: incoming bubbles are white on the grey screen. */
+.chatFill {
+  flex: 1;
+  justify-content: flex-start;
+  padding-top: calc(8 * var(--u, 1px));
+  font-size: calc(13.5 * var(--u, 1px));
+}
+
+.chatFill .in {
+  background: var(--surface);
+}

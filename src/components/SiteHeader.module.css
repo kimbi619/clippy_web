@@ -1,0 +1,339 @@
+/*
+ * Global header. Fixed, 64px, transparent until the page scrolls past it,
+ * then a progressively blurred frosted background fades in. No border.
+ */
+
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  transition: transform 320ms var(--ease);
+}
+
+/* Phones: slides away while reading, back on scroll up. */
+.header[data-hidden] {
+  transform: translateY(-100%);
+}
+
+/* ---------- Frosted, progressively blurred background ---------- */
+
+/* Extends below the bar so the blur fades out softly instead of ending on an edge. */
+.backdrop {
+  --fade: calc(var(--nav-height) + 28px);
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--fade);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms var(--ease);
+  /* Tint: full strength across the bar, fading to nothing below it. */
+  background: linear-gradient(
+    to bottom,
+    var(--nav-bg) 0%,
+    var(--nav-bg) 55%,
+    color-mix(in srgb, var(--nav-bg) 50%, transparent) 78%,
+    transparent 100%
+  );
+}
+
+.header[data-scrolled] .backdrop {
+  opacity: 1;
+}
+
+/* Three blur strengths stacked; each is masked so it reaches less far down. */
+.backdrop span {
+  position: absolute;
+  inset: 0;
+}
+
+.blur1 {
+  backdrop-filter: blur(2px) saturate(160%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+}
+
+.blur2 {
+  backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 82%);
+}
+
+.blur3 {
+  backdrop-filter: blur(20px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 65%);
+}
+
+/* ---------- Bar ---------- */
+
+.bar {
+  position: relative;
+  z-index: 2;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.mark {
+  border-radius: 8px;
+}
+
+.links {
+  display: flex;
+  gap: var(--space-2);
+  margin-inline: auto;
+}
+
+/* Pill hover/active states instead of underlines. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  transition:
+    color var(--duration) var(--ease),
+    background-color var(--duration) var(--ease);
+}
+
+.link:hover {
+  color: var(--text);
+  background: var(--fill);
+}
+
+.link[aria-current="page"] {
+  color: var(--text);
+  font-weight: 500;
+  background: var(--fill);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.cta:hover {
+  background: var(--accent-hover);
+}
+
+.ctaShort {
+  display: none;
+}
+
+/* Two-line menu icon that turns into a cross. */
+.menuButton {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  border-radius: 50%;
+}
+
+.bar1,
+.bar2 {
+  position: absolute;
+  left: 13px;
+  width: 18px;
+  height: 1.75px;
+  border-radius: 1px;
+  background: var(--text);
+  transition: transform 280ms var(--ease);
+}
+
+.bar1 {
+  top: 18px;
+}
+
+.bar2 {
+  top: 24.25px;
+}
+
+.header[data-open] .bar1 {
+  transform: translateY(3.125px) rotate(45deg);
+}
+
+.header[data-open] .bar2 {
+  transform: translateY(-3.125px) rotate(-45deg);
+}
+
+/* ---------- Mobile sheet ---------- */
+
+.sheet {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .links {
+    display: none;
+  }
+
+  .actions {
+    margin-left: auto;
+  }
+
+  .ctaLong {
+    display: none;
+  }
+
+  .ctaShort {
+    display: inline;
+  }
+
+  .cta {
+    min-height: 34px;
+    padding: 0 14px;
+    font-size: 0.875rem;
+  }
+
+  .menuButton {
+    display: inline-block;
+  }
+
+  /* While open, the CTA in the bar steps back: the sheet has its own. */
+  .header[data-open] .cta {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sheet {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    visibility: hidden;
+    opacity: 0;
+    /* Solid, like a system sheet: nothing from the page competes with the links. */
+    background: var(--bg);
+    transition:
+      opacity 220ms var(--ease),
+      visibility 0s linear 220ms;
+  }
+
+  .header[data-open] .sheet {
+    visibility: visible;
+    opacity: 1;
+    transition:
+      opacity 220ms var(--ease),
+      visibility 0s;
+  }
+
+  .sheetInner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: calc(var(--nav-height) + var(--space-6)) var(--gutter)
+      calc(var(--space-8) + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    /* Content settles 8px into place as the sheet fades in — no bounce, no stagger. */
+    transform: translateY(-8px);
+    transition: transform 260ms var(--ease);
+  }
+
+  .header[data-open] .sheetInner {
+    transform: none;
+  }
+
+  .primary {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .primaryLink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 60px;
+    font-family: var(--font-heading), system-ui, sans-serif;
+    font-size: 2.125rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  /* Current page: a small accent dot after the label. */
+  .primaryLink[aria-current="page"]::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .primaryLink:active {
+    color: var(--text-muted);
+  }
+
+  .secondary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin-top: var(--space-8);
+  }
+
+  .secondaryLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 1.0625rem;
+    color: var(--text-muted);
+  }
+
+  .secondaryLink[aria-current="page"] {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .sheetFooter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: auto;
+    padding-top: var(--space-10);
+  }
+
+
+  /* The bar stays transparent over the open sheet. */
+  .header[data-open] .backdrop {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .backdrop,
+  .bar1,
+  .bar2,
+  .sheet,
+  .sheetInner {
+    transition: none;
+  }
+
+  .sheetInner {
+    transform: none;
+  }
+}

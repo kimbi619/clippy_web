@@ -1,0 +1,24 @@
+/* Colours sampled from the renders' own backgrounds so the panel edge is invisible. */
+.panel {
+  --mascot-bg: #fceee1;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  background: var(--mascot-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  .panel {
+    --mascot-bg: #111615;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bare {
+  aspect-ratio: 1;
+}
