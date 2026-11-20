@@ -129,7 +129,8 @@
   min-height: 38px;
   padding: 0 18px;
   border-radius: var(--radius-pill);
-  background: var(--accent);
+  /* A deeper shade of the accent so the one action in the bar stands out. */
+  background: color-mix(in srgb, var(--accent) 72%, #000);
   color: var(--accent-text);
   font-size: 0.9375rem;
   font-weight: 500;
@@ -137,10 +138,14 @@
 }
 
 .cta:hover {
-  background: var(--accent-hover);
+  background: color-mix(in srgb, var(--accent) 60%, #000);
 }
 
 .ctaShort {
+  display: none;
+}
+
+.sheetLanguage {
   display: none;
 }
 
@@ -198,6 +203,16 @@
 
   .ctaLong {
     display: none;
+  }
+
+  /* On phones the picker lives in the menu sheet, not the crowded bar. */
+  .language {
+    display: none;
+  }
+
+  .sheetLanguage {
+    display: block;
+    align-self: center;
   }
 
   .ctaShort {

@@ -1,6 +1,7 @@
 /*
- * Pricing. Plans as two columns of type on a grey band — no cards, no boxes.
- * Pro is set apart only by a thin accent rule above it and its button.
+ * Pricing. Plans as three columns of type on a grey band — no cards, no boxes.
+ * The featured plan is set apart only by a thin accent rule above it and its
+ * button. The comparison table uses tonal row bands, not borders.
  */
 
 .sectionTitle {
@@ -18,8 +19,8 @@
 
 .planGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-16) clamp(40px, 7vw, 120px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-16) clamp(32px, 4vw, 72px);
 }
 
 .plan {
@@ -68,10 +69,21 @@
 
 .price {
   display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 5.25rem;
+}
+
+.price > p:first-child {
+  display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--space-2) var(--space-3);
-  min-height: 3.5rem;
+}
+
+.yearly {
+  font-size: var(--fs-callout);
+  color: var(--text-muted);
 }
 
 .amount {
@@ -85,12 +97,6 @@
 
 .per {
   font-size: var(--fs-callout);
-  color: var(--text-faint);
-}
-
-.pending {
-  font-size: var(--fs-title2);
-  font-weight: 600;
   color: var(--text-faint);
 }
 
@@ -128,6 +134,35 @@
   color: var(--accent);
 }
 
+/* Teams: one line of prose under the plans, not a fourth column. */
+.teams {
+  display: grid;
+  grid-template-columns: minmax(0, 0.35fr) minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-3) clamp(24px, 4vw, 64px);
+  margin-top: clamp(56px, 7vw, 96px);
+}
+
+.teamsName {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: var(--fs-title1);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.teamsText {
+  max-width: 62ch;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.teamsText strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
 /* What every plan gets: one quiet line, separated by dots. */
 .every {
   display: flex;
@@ -151,6 +186,134 @@
 .everyList li:not(:last-child)::after {
   content: "·";
   margin-inline: 0.6em;
+  color: var(--text-faint);
+}
+
+/* ---------- Comparison table ---------- */
+
+.compare {
+  padding-block: var(--space-section) 0;
+}
+
+.compareLead {
+  margin-top: var(--space-4);
+  font-size: var(--fs-lead);
+  color: var(--text-muted);
+}
+
+.tableScroll {
+  margin-top: var(--space-12);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tableScroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--fs-callout);
+  line-height: 1.4;
+}
+
+.table th,
+.table td {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table thead th {
+  padding-block: var(--space-5);
+}
+
+.colName {
+  display: block;
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: var(--fs-title2);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.colPrice {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--fs-footnote);
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+.table thead th:first-child,
+.table tbody th[scope="row"] {
+  width: 34%;
+}
+
+.table tbody th[scope="row"] {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.rowNote {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--fs-footnote);
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.table td {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tonal bands on every other row instead of rules. */
+.table tbody tr:not(.groupRow):nth-child(odd) > * {
+  background: var(--bg-alt);
+}
+
+.table tbody tr:not(.groupRow):nth-child(odd) > :first-child {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.table tbody tr:not(.groupRow):nth-child(odd) > :last-child {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.groupRow th {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-3);
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: var(--fs-title3);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.table tbody:first-of-type .groupRow th {
+  padding-top: var(--space-6);
+}
+
+/* The featured plan's column is the only coloured text in the table. */
+.table thead th.featuredCol .colName {
+  color: var(--accent);
+}
+
+.table td.featuredCol {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.check {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.dash {
   color: var(--text-faint);
 }
 
@@ -195,11 +358,45 @@
 
 /* ---------- Narrow screens ---------- */
 
+@media (max-width: 1024px) {
+  .planGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .teams {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 860px) {
   .planGrid,
   .faqGrid {
     grid-template-columns: 1fr;
   }
+
+  /* The table scrolls sideways: keep the feature names pinned on the left. */
+  .table {
+    min-width: 560px;
+  }
+
+  .table th,
+  .table td {
+    padding: var(--space-3) var(--space-3);
+  }
+
+  .table thead th:first-child,
+  .table tbody th[scope="row"] {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    width: 160px;
+    background: var(--bg);
+  }
+
+  .table tbody tr:not(.groupRow):nth-child(odd) > th[scope="row"] {
+    background: var(--bg-alt);
+  }
+
 
   .everyList {
     flex-direction: column;

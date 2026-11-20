@@ -8,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { mainNav, type NavItem } from "@/lib/site";
 
 import { DownloadButtons } from "./DownloadButtons";
+import { LanguagePicker } from "./LanguagePicker";
 import styles from "./SiteHeader.module.css";
 
 /** Secondary links shown only in the mobile menu. */
@@ -137,6 +138,7 @@ export function SiteHeader() {
         </ul>
 
         <div className={styles.actions}>
+          <LanguagePicker className={styles.language} />
           <Link href="/download" className={styles.cta}>
             <span className={styles.ctaLong}>Download</span>
             <span className={styles.ctaShort}>Get the app</span>
@@ -191,6 +193,7 @@ export function SiteHeader() {
 
           {/* Bottom of the sheet, in thumb reach. */}
           <div className={styles.sheetFooter}>
+            <LanguagePicker className={styles.sheetLanguage} up />
             <DownloadButtons align="center" />
           </div>
         </div>

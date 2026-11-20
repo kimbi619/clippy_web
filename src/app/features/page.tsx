@@ -130,7 +130,7 @@ export default function FeaturesPage() {
             </p>
           </div>
         </div>
-        <div className={styles.phones}>
+        <div className={styles.phones} data-phone-depth>
           <figure className={styles.phoneItem}>
             <TodayPhone />
             <figcaption>Today</figcaption>

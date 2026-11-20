@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import type { ReactNode } from "react";
 
 import { DownloadButtons } from "@/components/DownloadButtons";
 import { JsonLd } from "@/components/JsonLd";
 import { Button } from "@/components/Button";
+import { CallsPhone, ChatsPhone, HighlightsPhone, TodayPhone } from "@/components/home/mockups";
 import {
-  CallsPhone,
-  ChatsPhone,
-  DeadlinesPhone,
-  GroupSummaryPhone,
-  HighlightsPhone,
-  LiveCallPhone,
-  ReplyPhone,
-  ScreenshotPhone,
-  TodayPhone,
-  VoiceNotePhone,
-} from "@/components/home/mockups";
-import { StickyStory, type Chapter } from "@/components/home/StickyStory";
+  Bubble,
+  CallVignette,
+  DeadlineVignette,
+  FlowDiagram,
+  GroupVignette,
+  Notification,
+  Scene,
+  ReplyVignette,
+  ScreenshotVignette,
+  VoiceVignette,
+  type Tone,
+} from "@/components/home/vignettes";
 import { Pose } from "@/components/brand/Pose";
 import { Mascot } from "@/components/home/Mascot";
 import { BrandMark } from "@/components/brand/BrandMark";
@@ -66,72 +67,170 @@ const appLd = {
   publisher: { "@type": "Organization", name: site.name, url: site.url },
 };
 
-const chapters: Chapter[] = [
+type Feature = {
+  id: string;
+  tone: Tone;
+  eyebrow: string;
+  title: string;
+  body: ReactNode;
+  visual: ReactNode;
+};
+
+const features: Feature[] = [
   {
     id: "groups",
+    tone: "green",
+    eyebrow: "Groups",
     title: "Busy groups, in a paragraph.",
     body: (
-      <p>
+      <>
         Come back to 142 messages and read five lines instead. Clippy sums up what was decided, and{" "}
         <strong>points out the one question that needs you</strong>.
-      </p>
+      </>
     ),
-    screen: <GroupSummaryPhone />,
+    visual: <GroupVignette />,
   },
   {
     id: "replies",
+    tone: "blue",
+    eyebrow: "Replies",
     title: "Replies, ready when you are.",
     body: (
-      <p>
+      <>
         Clippy drafts replies from what was actually said — in the chat, on last week’s call, in the screenshot you
         saved. <strong>You pick one, tweak it, send it.</strong>
-      </p>
+      </>
     ),
-    screen: <ReplyPhone />,
+    visual: <ReplyVignette />,
   },
   {
     id: "deadlines",
+    tone: "amber",
+    eyebrow: "Deadlines",
     title: "Deadlines don’t slip.",
     body: (
-      <p>
+      <>
         “Can you send it by Friday?” becomes a deadline the moment someone types it. Clippy pulls dates from your chats,
         calls, screenshots and calendar, and <strong>nudges you before they’re due</strong>.
-      </p>
+      </>
     ),
-    screen: <DeadlinesPhone />,
+    visual: <DeadlineVignette />,
   },
   {
     id: "screenshots",
+    tone: "violet",
+    eyebrow: "Screenshots",
     title: "Screenshots that remember.",
     body: (
-      <p>
+      <>
         Boarding passes, receipts, addresses, a message someone sent you. Clippy reads your screenshots and{" "}
         <strong>notes what matters</strong>, so the details are there when you need them.
-      </p>
+      </>
     ),
-    screen: <ScreenshotPhone />,
+    visual: <ScreenshotVignette />,
   },
   {
     id: "calls",
+    tone: "teal",
+    eyebrow: "Calls",
     title: "Calls, written down.",
     body: (
-      <p>
+      <>
         Add Clippy to a WhatsApp call and the transcript writes itself, labelled by who said it. When you hang up,{" "}
         <strong>a short summary is waiting</strong>.
-      </p>
+      </>
     ),
-    screen: <LiveCallPhone />,
+    visual: <CallVignette />,
   },
   {
     id: "voice-notes",
+    tone: "rose",
+    eyebrow: "Voice notes",
     title: "Voice notes you can read.",
     body: (
-      <p>
+      <>
         Forward a voice note and <strong>get it back as text</strong>. Catch up in a meeting, on a train, or anywhere
         you can’t play audio.
-      </p>
+      </>
     ),
-    screen: <VoiceNotePhone />,
+    visual: <VoiceVignette />,
+  },
+];
+
+/** A day with Clippy: when each thing actually helps. */
+const day: { time: string; tone: Tone; when: string; what: string; visual: ReactNode }[] = [
+  {
+    time: "07:30",
+    tone: "green",
+    when: "Before breakfast",
+    what: "Three busy groups, caught up overnight.",
+    visual: (
+      <Notification
+        time="07:30"
+        title="Clippy"
+        body={
+          <>
+            <strong>3 groups summed up:</strong> Family, Design team and Sunday football.
+          </>
+        }
+      />
+    ),
+  },
+  {
+    time: "09:10",
+    tone: "rose",
+    when: "On the train",
+    what: "A voice note, read instead of played.",
+    visual: (
+      <Bubble from="Ama · voice note 0:48" time="09:10">
+        “Tomorrow I call the bank, and on Thursday I renew the shop insurance.”
+      </Bubble>
+    ),
+  },
+  {
+    time: "12:45",
+    tone: "teal",
+    when: "In the call",
+    what: "“Clippy, what was the budget cap?”",
+    visual: (
+      <Bubble from="Clippy, out loud" time="12:45">
+        “Four thousand, with travel kept separate. You agreed that last Tuesday.”
+      </Bubble>
+    ),
+  },
+  {
+    time: "16:00",
+    tone: "amber",
+    when: "Before it’s due",
+    what: "The deadline someone mentioned on Tuesday.",
+    visual: (
+      <Notification
+        time="16:00"
+        title="Clippy"
+        body={
+          <>
+            <strong>Due at 17:00:</strong> send the deck to Daniel.
+          </>
+        }
+      />
+    ),
+  },
+  {
+    time: "21:30",
+    tone: "violet",
+    when: "Packing",
+    what: "Gate and seat, from the screenshot you forgot you took.",
+    visual: (
+      <Notification
+        time="21:30"
+        title="Clippy"
+        body={
+          <>
+            <strong>Tomorrow 22:10</strong> · LH 569 to Frankfurt · gate B12 · seat 14C
+          </>
+        }
+      />
+    ),
   },
 ];
 
@@ -154,61 +253,81 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero: cream; Clippy behind with feathered edges, one iPhone in front cut off by the section edge. */}
+      {/* Hero: cream with a green glow; Clippy behind with feathered edges, one iPhone in front with two of
+          Clippy's notifications resting on it. */}
       <section className={styles.hero}>
         <div className={`container-wide ${styles.heroGrid}`}>
           <div className={styles.heroCopy}>
-            <h1 className={styles.heroTitle}>Everything that matters in your chats. First.</h1>
+            <p className={styles.eyebrow}>
+              <BrandMark name="whatsapp" tone="brand" className={styles.eyebrowMark} />
+              Your companion for WhatsApp
+            </p>
+            <h1 className={styles.heroTitle}>
+              Everything that matters in your chats. <span className={styles.accent}>First.</span>
+            </h1>
             <p className={styles.heroLead}>
-              Clippy is a companion for WhatsApp. It sums up busy groups, drafts your replies, catches deadlines, reads
-              your screenshots and joins your calls — then shows you what’s important.
+              Clippy sums up busy groups, drafts your replies, catches deadlines, reads your screenshots and joins your
+              calls — then shows you what’s important.
             </p>
             <DownloadButtons />
-            <p className={styles.heroNote}>Free on iPhone and Android. Works with Siri and Gemini.</p>
+            <ul role="list" className={styles.pills} aria-label="Works with">
+              <li>
+                <BrandMark name="whatsapp" tone="brand" className={styles.pillMark} />
+                WhatsApp
+              </li>
+              <li>
+                <BrandMark name="apple" className={styles.pillMark} />
+                Siri
+              </li>
+              <li>
+                <BrandMark name="gemini" tone="brand" className={styles.pillMark} />
+                Gemini
+              </li>
+              <li>
+                <BrandMark name="googleCalendar" tone="brand" className={styles.pillMark} />
+                Google Calendar
+              </li>
+              <li>
+                <BrandMark name="apple" className={styles.pillMark} />
+                Apple Calendar
+              </li>
+            </ul>
           </div>
           <div className={styles.heroArt}>
             <Mascot bare priority size={560} alt="Clippy, a friendly green character." className={styles.heroMascot} />
             <HighlightsPhone device="iphone" className={styles.heroPhone} />
+            <div className={styles.heroNotes} aria-hidden="true">
+              <Scene className={styles.heroScene}>
+              <Notification
+                className={styles.heroNote1}
+                time="now"
+                title="Family · 142 messages"
+                body="Lunch moved to Sunday at 1. Ama needs the beach photos."
+              />
+              <Notification
+                className={styles.heroNote2}
+                time="9:00"
+                title="Due tomorrow"
+                body="Send the deck to Daniel"
+              />
+              </Scene>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Familiar names: what Clippy already works with. Monochrome so it reads as "works with", not an endorsement. */}
-      <section className={styles.worksWith} aria-label="Works with">
-        <div className={`container-wide ${styles.worksWithInner}`}>
-          <p className={styles.worksWithLabel}>Works with</p>
-          <ul role="list" className={styles.worksWithList}>
-            <li>
-              <BrandMark name="whatsapp" className={styles.mark} />
-              WhatsApp
-            </li>
-            <li>
-              <BrandMark name="apple" className={styles.mark} />
-              Siri
-            </li>
-            <li>
-              <BrandMark name="gemini" className={styles.mark} />
-              Gemini
-            </li>
-            <li>
-              <BrandMark name="googleCalendar" className={styles.mark} />
-              Google Calendar
-            </li>
-            <li>
-              <BrandMark name="apple" className={styles.mark} />
-              Apple Calendar
-            </li>
-          </ul>
+      {/* One sentence, then the idea drawn out: what goes in, what comes back. */}
+      <section className={styles.statement} aria-labelledby="statement-title">
+        <div className="container-wide">
+          <h2 id="statement-title" className={styles.statementText}>
+            WhatsApp shows you everything. Clippy shows you <strong>what matters</strong>: the{" "}
+            <strong>decision in the group</strong>, the <strong>reply you owe</strong>, the{" "}
+            <strong>deadline on Friday</strong>, the <strong>gate on your boarding pass</strong>.
+          </h2>
+          <div className={styles.flowWrap}>
+            <FlowDiagram />
+          </div>
         </div>
-      </section>
-
-      {/* One sentence instead of three feature cards. */}
-      <section className={styles.statement}>
-        <p className={`container-wide ${styles.statementText}`}>
-          WhatsApp shows you everything. Clippy shows you <strong>what matters</strong>: the{" "}
-          <strong>decision in the group</strong>, the <strong>reply you owe</strong>, the{" "}
-          <strong>deadline on Friday</strong>, the <strong>gate on your boarding pass</strong>.
-        </p>
       </section>
 
       {/* Add it. Ask it. Read it. — Clippy acts each one out. */}
@@ -232,12 +351,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className={styles.story} aria-labelledby="story-title">
-        <h2 id="story-title" className="visually-hidden">
-          What Clippy does
-        </h2>
-        {/* Phones only on wide screens; on a phone the chapters read as text. */}
-        <StickyStory chapters={chapters} inlineScreens={false} />
+      {/* What it does: six rows, each with a colour panel of the real UI. */}
+      <section className={styles.features} aria-labelledby="features-title">
+        <div className="container-wide">
+          <h2 id="features-title" className={styles.featuresTitle}>
+            Six things it does, <span className={styles.muted}>so you don’t have to.</span>
+          </h2>
+          <div className={styles.rows}>
+            {features.map((f) => (
+              <article key={f.id} id={f.id} className={styles.row} data-tone={f.tone}>
+                <div className={styles.rowCopy}>
+                  <p className={styles.rowEyebrow}>{f.eyebrow}</p>
+                  <h3 className={styles.rowTitle}>{f.title}</h3>
+                  <p className={styles.rowBody}>{f.body}</p>
+                </div>
+                <div className={styles.rowVisual}>{f.visual}</div>
+              </article>
+            ))}
+          </div>
+          <Button href="/features" variant="plain">
+            See every feature
+          </Button>
+        </div>
       </section>
 
       {/* The one dark moment: two conversations — on a call, and through the phone's own assistant. */}
@@ -282,6 +417,29 @@ export default function HomePage() {
               </blockquote>
             </figure>
           </div>
+        </div>
+      </section>
+
+      {/* A day with Clippy: big times down the left, what it did on the right. */}
+      <section className={styles.day} aria-labelledby="day-title">
+        <div className="container-wide">
+          <h2 id="day-title" className={styles.sectionTitle}>
+            A day with Clippy.
+          </h2>
+          <ol role="list" className={styles.dayList}>
+            {day.map((d) => (
+              <li key={d.time} className={styles.dayRow}>
+                <p className={styles.dayTime}>{d.time}</p>
+                <div className={styles.dayCopy}>
+                  <p className={styles.dayWhen}>{d.when}</p>
+                  <p className={styles.dayWhat}>{d.what}</p>
+                </div>
+                <div className={styles.dayVisual} aria-hidden="true">
+                  <Scene tone={d.tone}>{d.visual}</Scene>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -378,25 +536,6 @@ export default function HomePage() {
           </div>
         </section>
       ) : null}
-
-      <section className={styles.closing} aria-labelledby="closing-title">
-        <div className={`container-wide ${styles.closingInner}`}>
-          <div className={styles.closingCopy}>
-            <h2 id="closing-title" className={styles.closingTitle}>
-              Let Clippy keep up for you.
-            </h2>
-            <p className={styles.sectionLead}>Free on iPhone and Android.</p>
-            <DownloadButtons />
-          </div>
-          <Image
-            src="/brand/clippy-icon.png"
-            alt="The Clippy app icon"
-            width={240}
-            height={240}
-            className={styles.appIcon}
-          />
-        </div>
-      </section>
 
       <JsonLd data={appLd} />
     </>

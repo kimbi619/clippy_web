@@ -100,8 +100,8 @@ export function LiveCallPhone({ className, device }: PhoneProps) {
           <span className={styles.peopleNote}>Clippy is transcribing</span>
         </div>
         <div className={styles.group}>
-          {liveLines.map((line) => (
-            <TranscriptLine key={line.time} line={line} />
+          {liveLines.map((line, i) => (
+            <TranscriptLine key={i} line={line} />
           ))}
         </div>
       </div>

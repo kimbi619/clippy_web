@@ -5,7 +5,17 @@ import { JsonLd } from "@/components/JsonLd";
 import { PageHeader } from "@/components/PageHeader";
 import { Closing } from "@/components/product/Closing";
 import { pageMetadata } from "@/lib/metadata";
-import { allPlans, currency, formatPrice, plans, pricingFaqs, type Plan } from "@/lib/pricing";
+import {
+  allPlans,
+  comparison,
+  currency,
+  formatPrice,
+  plans,
+  pricingFaqs,
+  teams,
+  type Cell,
+  type Plan,
+} from "@/lib/pricing";
 import { absoluteUrl, site } from "@/lib/site";
 
 import styles from "./pricing.module.css";
@@ -13,13 +23,10 @@ import styles from "./pricing.module.css";
 export const metadata: Metadata = pageMetadata({
   title: "Pricing",
   description:
-    "Clippy is free to start on iPhone and Android. See what Free includes, what Pro adds, and how paying and cancelling work.",
+    "Clippy is free to start on iPhone and Android. Plus is $9.99 a month and Pro $19.99. Compare call minutes, messages, memory and AI, and see how paying works.",
   path: "/pricing",
-  socialTitle: "Clippy pricing: Free and Pro",
+  socialTitle: "Clippy pricing: Free, Plus and Pro",
 });
-
-/** Only plans with an announced price go into structured data. */
-const priced = plans.filter((p) => p.monthly !== null);
 
 const productLd = {
   "@context": "https://schema.org",
@@ -28,7 +35,7 @@ const productLd = {
   url: absoluteUrl("/pricing"),
   applicationCategory: "ProductivityApplication",
   operatingSystem: "iOS, Android",
-  offers: priced.map((p) => ({
+  offers: plans.map((p) => ({
     "@type": "Offer",
     name: `${site.name} ${p.name}`,
     price: String(p.monthly),
@@ -57,30 +64,61 @@ const faqLd = {
 };
 
 function Price({ plan }: { plan: Plan }) {
-  if (plan.monthly === null) {
-    return (
-      <p className={styles.price}>
-        <span className={styles.pending}>Price announced soon</span>
-      </p>
-    );
-  }
   if (plan.monthly === 0) {
     return (
-      <p className={styles.price}>
-        <span className={styles.amount}>{formatPrice(0)}</span>
-        <span className={styles.per}>forever</span>
-      </p>
+      <div className={styles.price}>
+        <p>
+          <span className={styles.amount}>{formatPrice(0)}</span>
+          <span className={styles.per}>forever</span>
+        </p>
+        <p className={styles.yearly}>No card needed</p>
+      </div>
     );
   }
   return (
-    <p className={styles.price}>
-      <span className={styles.amount}>{formatPrice(plan.monthly)}</span>
-      <span className={styles.per}>
-        a month
-        {plan.yearly !== null ? <> · or {formatPrice(plan.yearly)} a year</> : null}
-      </span>
-    </p>
+    <div className={styles.price}>
+      <p>
+        <span className={styles.amount}>{formatPrice(plan.monthly)}</span>
+        <span className={styles.per}>a month</span>
+      </p>
+      {plan.yearlyMonthly !== null ? (
+        <p className={styles.yearly}>
+          or {formatPrice(plan.yearlyMonthly)} a month billed yearly ({formatPrice(plan.yearlyMonthly * 12)})
+        </p>
+      ) : null}
+    </div>
   );
+}
+
+function CellValue({ value }: { value: Cell }) {
+  if (value === true) {
+    return (
+      <>
+        <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.check}>
+          <path
+            d="M3 8.5l3 3 7-7"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span className="visually-hidden">Included</span>
+      </>
+    );
+  }
+  if (value === false) {
+    return (
+      <>
+        <span aria-hidden="true" className={styles.dash}>
+          –
+        </span>
+        <span className="visually-hidden">Not included</span>
+      </>
+    );
+  }
+  return <>{value}</>;
 }
 
 export default function PricingPage() {
@@ -89,10 +127,10 @@ export default function PricingPage() {
       <PageHeader
         pose="presenting"
         title="Start free. Upgrade when it’s earning its keep."
-        lead="Clippy is free on iPhone and Android. Pro adds more capable AI and more room for the calls and chats that matter."
+        lead="Clippy is free on iPhone and Android. Plus gives you room for the calls and chats that matter and a Clippy that remembers. Pro adds the most capable AI."
       />
 
-      {/* The plans: two columns of type, no boxes. Pro is marked with a thin accent rule. */}
+      {/* The plans: three columns of type, no boxes. The featured plan is marked with a thin accent rule. */}
       <section className={styles.plans} aria-labelledby="plans-title">
         <h2 id="plans-title" className="visually-hidden">
           Plans
@@ -103,7 +141,7 @@ export default function PricingPage() {
               <div className={styles.planHead}>
                 <h3 className={styles.planName}>
                   {plan.name}
-                  {plan.featured ? <span className={styles.badge}>Most capable</span> : null}
+                  {plan.badge ? <span className={styles.badge}>{plan.badge}</span> : null}
                 </h3>
                 <p className={styles.pitch}>{plan.pitch}</p>
               </div>
@@ -114,7 +152,7 @@ export default function PricingPage() {
               <div className={styles.features}>
                 <p className={styles.includes}>{plan.includesLabel}</p>
                 <ul role="list">
-                  {plan.features.map((f) => (
+                  {plan.highlights.map((f) => (
                     <li key={f}>
                       <svg viewBox="0 0 16 16" aria-hidden="true">
                         <path
@@ -135,6 +173,21 @@ export default function PricingPage() {
           ))}
         </div>
 
+        <div className={`container-wide ${styles.teams}`}>
+          <p className={styles.teamsName}>{teams.name}</p>
+          <p className={styles.teamsText}>
+            <strong>
+              {formatPrice(teams.perPersonMonthly)} per person a month, or {formatPrice(teams.perPersonYearlyMonthly)}{" "}
+              billed yearly.
+            </strong>{" "}
+            {teams.pitch} For {teams.minSeats} to {teams.maxSeats} people; more than {teams.maxSeats}, ask us about
+            volume pricing.
+          </p>
+          <Button href="/contact" variant="plain">
+            Talk to us about teams
+          </Button>
+        </div>
+
         <div className={`container-wide ${styles.every}`}>
           <p className={styles.everyLabel}>Every plan</p>
           <ul role="list" className={styles.everyList}>
@@ -142,6 +195,57 @@ export default function PricingPage() {
               <li key={item}>{item}</li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Full breakdown: one table, tonal row bands instead of borders. Scrolls sideways on phones. */}
+      <section className={styles.compare} aria-labelledby="compare-title">
+        <div className="container-wide">
+          <h2 id="compare-title" className={styles.sectionTitle}>
+            Compare plans.
+          </h2>
+          <p className={styles.compareLead}>Everything each plan includes, every month.</p>
+          <div className={styles.tableScroll} role="region" aria-labelledby="compare-title" tabIndex={0}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <span className="visually-hidden">Feature</span>
+                  </th>
+                  {plans.map((p) => (
+                    <th key={p.id} scope="col" className={p.featured ? styles.featuredCol : undefined}>
+                      <span className={styles.colName}>{p.name}</span>
+                      <span className={styles.colPrice}>
+                        {p.monthly === 0 ? "$0" : `${formatPrice(p.monthly)} a month`}
+                      </span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              {comparison.map((group) => (
+                <tbody key={group.title}>
+                  <tr className={styles.groupRow}>
+                    <th scope="colgroup" colSpan={plans.length + 1}>
+                      {group.title}
+                    </th>
+                  </tr>
+                  {group.rows.map((row) => (
+                    <tr key={row.label}>
+                      <th scope="row">
+                        {row.label}
+                        {row.note ? <span className={styles.rowNote}>{row.note}</span> : null}
+                      </th>
+                      {row.values.map((v, i) => (
+                        <td key={plans[i].id} className={plans[i].featured ? styles.featuredCol : undefined}>
+                          <CellValue value={v} />
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              ))}
+            </table>
+          </div>
         </div>
       </section>
 
@@ -177,7 +281,7 @@ export default function PricingPage() {
         ]}
       />
 
-      {priced.length > 0 ? <JsonLd data={productLd} /> : null}
+      <JsonLd data={productLd} />
       <JsonLd data={faqLd} />
     </>
   );

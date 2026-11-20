@@ -341,3 +341,47 @@
 .iphone .backAndroid {
   display: none;
 }
+
+/* ---------- Thickness (3D scenes only) ----------
+ * A stack of frame-coloured outlines behind the display. Hidden unless an
+ * ancestor sets [data-phone-depth] and gives the phone a 3D transform; then
+ * the stack reads as the phone's metal edge and back. */
+
+.body {
+  display: none;
+}
+
+:global([data-phone-depth]) .device {
+  transform-style: preserve-3d;
+  /* Real phones are ~8.5 mm thick on ~78 mm wide. */
+  --depth: calc(100cqw * 0.09);
+}
+
+:global([data-phone-depth]) .body {
+  display: block;
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--r-out) * 100cqw / var(--dw));
+  /* Shade the band: lighter at the polished front lip, darker toward the back. */
+  background: color-mix(in srgb, var(--frame-hi) calc(60% - var(--i) * 4%), var(--frame));
+  transform: translateZ(calc(var(--depth) * var(--i) / -14));
+}
+
+/* The back glass. */
+.layer:last-child {
+  background: #1d1d1f;
+}
+
+:global([data-phone-depth]) .glass {
+  transform: translateZ(0.5px);
+}
+
+:global([data-phone-depth]) .buttons {
+  transform: translateZ(calc(var(--depth) / -2));
+}

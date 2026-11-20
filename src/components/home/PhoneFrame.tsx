@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import styles from "./PhoneFrame.module.css";
 
@@ -26,9 +26,17 @@ type Props = {
  * any size. Screen content is laid out on a 360-unit-wide canvas (`--u`), which
  * puts body text at the platforms' real reading size.
  */
+/** Layers stacked behind the display to give the phone thickness in 3D scenes. */
+const BODY_LAYERS = Array.from({ length: 14 }, (_, i) => i + 1);
+
 export function PhoneFrame({ label, children, className, device = "pixel" }: Props) {
   return (
     <div className={`${styles.device} ${styles[device]} ${className ?? ""}`} role="img" aria-label={label}>
+      <div className={styles.body} aria-hidden="true">
+        {BODY_LAYERS.map((i) => (
+          <span key={i} className={styles.layer} style={{ "--i": i } as CSSProperties} />
+        ))}
+      </div>
       <div className={styles.buttons} aria-hidden="true">
         {device === "iphone" ? (
           <>

@@ -1,0 +1,785 @@
+/*
+ * Vignettes: Clippy's UI pieces floating on soft colour panels. The panels
+ * are the page's colour; the UI on them stays white and quiet like the app.
+ */
+
+.panel,
+.scene {
+  --ui: #ffffff;
+  --ui-text: #1d1d1f;
+  --ui-muted: #5f6368;
+  --ui-faint: #8a8f98;
+  --ui-fill: #f2f3f5;
+  --ui-shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 10px 30px -6px rgba(16, 24, 40, 0.14);
+  --bubble-out: #d9fdd3;
+  --tint-a: #e6f6ee;
+  --tint-b: #bfe8d2;
+  --ink: #167a55;
+}
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--ui-text);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 460px;
+  padding: clamp(24px, 4vw, 48px);
+  overflow: hidden;
+  border-radius: clamp(24px, 2.4vw, 36px);
+  background:
+    radial-gradient(90% 70% at 100% 0%, rgba(255, 255, 255, 0.65), transparent 60%),
+    linear-gradient(155deg, var(--tint-a) 0%, var(--tint-b) 100%);
+  color: var(--ui-text);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.green {
+  --tint-a: #e8f7ef;
+  --tint-b: #b9e6cd;
+  --ink: #167a55;
+}
+
+.blue {
+  --tint-a: #eaf2ff;
+  --tint-b: #bcd3fb;
+  --ink: #2f6fdf;
+}
+
+.amber {
+  --tint-a: #fff4e0;
+  --tint-b: #fbd9a1;
+  --ink: #b26a00;
+}
+
+.violet {
+  --tint-a: #f2edff;
+  --tint-b: #d3c6fb;
+  --ink: #6a4fd8;
+}
+
+.teal {
+  --tint-a: #e4f7f6;
+  --tint-b: #acdfdb;
+  --ink: #0f7f78;
+}
+
+.rose {
+  --tint-a: #fff0f3;
+  --tint-b: #f8c5d1;
+  --ink: #c23b62;
+}
+
+@media (prefers-color-scheme: dark) {
+  .panel,
+  .scene {
+    --ui: #1f2023;
+    --ui-text: #f2f2f4;
+    --ui-muted: #b4b6bc;
+    --ui-faint: #8b8e96;
+    --ui-fill: #2b2c30;
+    --ui-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 14px 34px -8px rgba(0, 0, 0, 0.6);
+    --bubble-out: #144d37;
+  }
+
+  .panel {
+    background:
+      radial-gradient(90% 70% at 100% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
+      linear-gradient(155deg, var(--tint-a) 0%, var(--tint-b) 100%);
+  }
+
+  .green {
+    --tint-a: #0f2a1f;
+    --tint-b: #154a35;
+    --ink: #3dd598;
+  }
+
+  .blue {
+    --tint-a: #0f1d36;
+    --tint-b: #1a3566;
+    --ink: #7eaaff;
+  }
+
+  .amber {
+    --tint-a: #2a1e0a;
+    --tint-b: #4d3511;
+    --ink: #f5b44f;
+  }
+
+  .violet {
+    --tint-a: #1c1533;
+    --tint-b: #33275e;
+    --ink: #b4a2ff;
+  }
+
+  .teal {
+    --tint-a: #0b2523;
+    --tint-b: #12443f;
+    --ink: #4fd6cb;
+  }
+
+  .rose {
+    --tint-a: #2b1219;
+    --tint-b: #52202f;
+    --ink: #ff8fb0;
+  }
+}
+
+.panelInner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100%, 420px);
+}
+
+/* ---------- Pieces ---------- */
+
+.clippyAvatar {
+  display: inline-block;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #fceee1;
+}
+
+.clippyAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.initial {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.i_amber {
+  background: #e0912f;
+}
+
+.i_rose {
+  background: #d9507a;
+}
+
+.i_teal {
+  background: #1f9c8f;
+}
+
+.i_slate {
+  background: #6b7280;
+}
+
+.i_blue {
+  background: #3b7be0;
+}
+
+.bubble {
+  position: relative;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 86%;
+  padding: 8px 12px 6px;
+  border-radius: 4px 16px 16px 16px;
+  background: var(--ui);
+  box-shadow: var(--ui-shadow);
+}
+
+.out {
+  align-self: flex-end;
+  border-radius: 16px 4px 16px 16px;
+  background: var(--bubble-out);
+}
+
+.faded {
+  opacity: 0.6;
+}
+
+.from {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.time {
+  align-self: flex-end;
+  font-size: 11px;
+  color: var(--ui-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.ticks {
+  color: #34b7f1;
+  font-size: 11px;
+  letter-spacing: -2px;
+  margin-left: 4px;
+}
+
+.card {
+  padding: 14px 16px 16px;
+  border-radius: 18px;
+  background: var(--ui);
+  box-shadow: var(--ui-shadow);
+}
+
+.cardWide {
+  width: 100%;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12.5px;
+}
+
+.cardBrand {
+  font-weight: 700;
+}
+
+.cardTitle {
+  color: var(--ui-faint);
+}
+
+.cardTitle::before {
+  content: "·";
+  margin-right: 8px;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 18px;
+}
+
+.bullets li::marker {
+  color: var(--ink);
+}
+
+.needs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 10px;
+  box-shadow: inset 0 1px 0 var(--ui-fill);
+  font-weight: 500;
+}
+
+.tagAccent {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--ui);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.replies {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reply {
+  align-self: flex-start;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--ui-fill);
+}
+
+.replyPicked {
+  background: var(--ink);
+  color: var(--ui);
+  font-weight: 600;
+}
+
+.mark {
+  padding: 0 3px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  color: inherit;
+  font-weight: 600;
+}
+
+.notif {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--ui, #fff) 82%, transparent);
+  backdrop-filter: blur(20px) saturate(1.6);
+  box-shadow: var(--ui-shadow, 0 10px 30px -6px rgba(16, 24, 40, 0.18));
+  color: var(--ui-text, #1d1d1f);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.notifText {
+  flex: 1;
+  min-width: 0;
+}
+
+.notifTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.notifTime {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--ui-faint, #8a8f98);
+}
+
+.notifBody {
+  color: var(--ui-text, #1d1d1f);
+}
+
+.agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.agenda li {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: baseline;
+}
+
+.agenda small {
+  color: var(--ui-faint);
+  font-size: 12px;
+}
+
+.day {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Boarding pass */
+.pass {
+  align-self: flex-start;
+  width: 88%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #1d2b5a, #2c3f86);
+  color: #fff;
+  box-shadow: var(--ui-shadow);
+  transform: rotate(-2deg);
+}
+
+.passTop {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.passRoute {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block: 10px 12px;
+}
+
+.passRoute span {
+  display: flex;
+  flex-direction: column;
+}
+
+.passRoute b {
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.passRoute small,
+.passGrid small {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.plane {
+  width: 22px;
+  height: 22px;
+  transform: rotate(90deg);
+  opacity: 0.85;
+}
+
+.passGrid {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.passGrid span {
+  display: flex;
+  flex-direction: column;
+}
+
+.check {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  vertical-align: -2px;
+  color: var(--ink);
+}
+
+.noteMeta {
+  font-size: 12.5px;
+  color: var(--ui-faint);
+}
+
+/* Call */
+.callHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: var(--ui);
+  box-shadow: var(--ui-shadow);
+}
+
+.liveDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff3b30;
+}
+
+.callMeta {
+  color: var(--ui-faint);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.faces {
+  display: flex;
+  margin-left: auto;
+}
+
+.faces > * {
+  margin-left: -6px;
+  box-shadow: 0 0 0 2px var(--ui);
+}
+
+.faces .initial {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 6px;
+}
+
+.lines p {
+  display: flex;
+  flex-direction: column;
+}
+
+.lines b {
+  font-size: 12.5px;
+  color: var(--ink);
+}
+
+/* Voice note */
+.voice {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 10px 10px;
+  border-radius: 4px 18px 18px 18px;
+  background: var(--ui);
+  box-shadow: var(--ui-shadow);
+}
+
+.play {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--ink);
+}
+
+.play svg {
+  width: 22px;
+  height: 22px;
+}
+
+.wave {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 22px;
+}
+
+.wave span {
+  width: 3px;
+  border-radius: 2px;
+  background: var(--ui-faint);
+  opacity: 0.55;
+}
+
+.wave .wavePlayed {
+  background: var(--ink);
+  opacity: 1;
+}
+
+.voiceLen {
+  font-size: 12px;
+  color: var(--ui-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.quote {
+  color: var(--ui-text);
+}
+
+/* ---------- Flow diagram ---------- */
+
+.flow {
+  --ui: #ffffff;
+  --ui-faint: #6e6e73;
+  --ui-shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 10px 26px -8px rgba(16, 24, 40, 0.16);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px minmax(0, 1fr);
+  align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .flow {
+    --ui: #1f2023;
+    --ui-faint: #9a9da5;
+    --ui-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 14px 34px -8px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.flowCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 400px;
+}
+
+.flowCol li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 64px;
+  padding: 0 16px;
+  border-radius: 16px;
+  background: var(--ui);
+  box-shadow: var(--ui-shadow);
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.flowIn span:last-child {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.flowIn small {
+  color: var(--ui-faint);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flowIcon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--bg-alt);
+}
+
+.flowIcon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.flowResult {
+  justify-content: flex-start;
+}
+
+.flowResult strong {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flowKind {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.flowHub {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 400px;
+}
+
+.flowLines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: color-mix(in srgb, var(--accent) 45%, transparent);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 5;
+}
+
+.flowLines .flowOut {
+  stroke: var(--accent);
+  stroke-dasharray: none;
+}
+
+.hubIcon {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  overflow: hidden;
+  border-radius: 30px;
+  box-shadow:
+    0 0 0 10px color-mix(in srgb, var(--accent) 12%, transparent),
+    0 0 0 22px color-mix(in srgb, var(--accent) 6%, transparent),
+    0 20px 50px -10px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.hubIcon img {
+  width: 100%;
+  height: 100%;
+}
+
+.hubLabel {
+  position: absolute;
+  top: calc(50% + 76px);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .panel {
+    min-height: 0;
+  }
+
+  .flow {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .flowCol {
+    height: auto;
+    gap: 10px;
+  }
+
+  .flowCol li {
+    height: 58px;
+  }
+
+  .flowHub {
+    height: 150px;
+  }
+
+  .flowLines {
+    display: none;
+  }
+
+  .hubLabel {
+    display: none;
+  }
+
+  /* A dotted spine through the hub instead of curves. */
+  .flowHub::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto;
+    left: 50%;
+    border-left: 2px dashed color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  .hubIcon {
+    width: 88px;
+    height: 88px;
+    border-radius: 24px;
+  }
+}
+
+/* Group header, like the top of a WhatsApp chat. */
+.chatHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px 4px;
+}
+
+.chatHead span:last-child {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.chatHead small {
+  font-size: 12.5px;
+  color: var(--ui-muted);
+}
+
+/* Loose pieces fill their column. */
+.scene > .bubble {
+  max-width: 100%;
+}
