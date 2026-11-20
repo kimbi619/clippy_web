@@ -17,7 +17,14 @@ export type Chapter = {
  * (a short cross-fade, none with Reduce Motion). On narrow screens each
  * chapter simply shows its own screen under the text.
  */
-export function StickyStory({ chapters }: { chapters: Chapter[] }) {
+export function StickyStory({
+  chapters,
+  inlineScreens = true,
+}: {
+  chapters: Chapter[];
+  /** On narrow screens, show each chapter's phone under its text. Off = text only. */
+  inlineScreens?: boolean;
+}) {
   const [active, setActive] = useState(0);
   const refs = useRef<(HTMLElement | null)[]>([]);
 
@@ -63,7 +70,7 @@ export function StickyStory({ chapters }: { chapters: Chapter[] }) {
               {c.title}
             </h3>
             <div className={styles.body}>{c.body}</div>
-            <div className={styles.inlineScreen}>{c.screen}</div>
+            {inlineScreens ? <div className={styles.inlineScreen}>{c.screen}</div> : null}
           </section>
         ))}
       </div>

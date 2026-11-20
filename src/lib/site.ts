@@ -8,9 +8,9 @@ export const site = {
   name: "Clippy",
   /** Production origin. Override per environment with NEXT_PUBLIC_SITE_URL. */
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://clippy.chat").replace(/\/$/, ""),
-  tagline: "Your assistant inside WhatsApp calls.",
+  tagline: "Your companion for WhatsApp.",
   description:
-    "Clippy joins your WhatsApp calls, writes down who said what as it happens, answers when you ask it something, and turns voice notes into text you can skim.",
+    "Clippy sums up busy groups, drafts replies, catches deadlines, reads your screenshots, joins your calls and turns voice notes into text — then shows you what matters first.",
   locale: "en_US",
   /** Static so pages stay fully prerendered (no request-time Date). */
   copyrightYear: 2026,
@@ -54,6 +54,7 @@ export type NavItem = { href: string; label: string };
 export const mainNav: NavItem[] = [
   { href: "/features", label: "Features" },
   { href: "/how-it-works", label: "How it works" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/privacy", label: "Privacy" },
   { href: "/blog", label: "Blog" },
 ];
@@ -64,6 +65,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
     items: [
       { href: "/features", label: "Features" },
       { href: "/how-it-works", label: "How it works" },
+      { href: "/pricing", label: "Pricing" },
       { href: "/download", label: "Download" },
       { href: "/faq", label: "FAQ" },
     ],

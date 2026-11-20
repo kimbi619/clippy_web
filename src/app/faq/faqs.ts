@@ -20,7 +20,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Is Clippy free?",
-        a: "Yes. Clippy is free during early access.",
+        a: "Clippy is free to start, with a Pro plan for more capable AI and more room. See the pricing page for what each plan includes.",
       },
     ],
   },

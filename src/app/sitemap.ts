@@ -19,6 +19,7 @@ const staticRoutes: {
   { path: "/how-it-works", lastModified: "2026-11-19", changeFrequency: "monthly", priority: 0.9 },
   { path: "/download", lastModified: "2026-11-19", changeFrequency: "monthly", priority: 0.9 },
   { path: "/privacy", lastModified: "2026-11-19", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/pricing", lastModified: "2026-11-20", changeFrequency: "monthly", priority: 0.8 },
   { path: "/faq", lastModified: "2026-11-19", changeFrequency: "monthly", priority: 0.7 },
   { path: "/about", lastModified: "2026-11-19", changeFrequency: "yearly", priority: 0.5 },
   { path: "/contact", lastModified: "2026-11-19", changeFrequency: "yearly", priority: 0.5 },

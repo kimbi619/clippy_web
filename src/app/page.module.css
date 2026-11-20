@@ -2,7 +2,26 @@
  * Home. Few containers: content sits on full-bleed tonal sections (cream,
  * white, black, grey), hierarchy comes from type size and space, and the
  * product pictures are large enough to carry each section on their own.
+ * On phones the page shows at most two phone mock-ups (hero + app); Clippy's
+ * poses carry the rest.
  */
+
+.muted {
+  color: var(--text-faint);
+}
+
+.sectionTitle {
+  font-size: var(--fs-display);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.sectionLead {
+  max-width: 44ch;
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
 
 /* ---------- Hero ---------- */
 
@@ -13,10 +32,10 @@
 
 .heroGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: var(--space-8);
-  min-height: min(880px, 100dvh);
+  min-height: min(860px, 100dvh);
 }
 
 .heroCopy {
@@ -40,17 +59,17 @@
   color: var(--text-muted);
 }
 
-/* Mascot behind, phone in front and cut off by the bottom of the section. */
+.heroNote {
+  font-size: var(--fs-footnote);
+  color: var(--text-faint);
+}
+
+/* Clippy behind, feathered so its feet fade into the cream; one iPhone in front,
+   cut off by the bottom of the section. */
 .heroArt {
   position: relative;
   align-self: stretch;
   min-height: 640px;
-}
-
-.heroMascot,
-.controlMascot {
-  /* Feather the render's edges so its square never shows against the section. */
-  mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
 }
 
 .heroMascot {
@@ -58,6 +77,7 @@
   top: calc(var(--nav-height) + 2%);
   right: -6%;
   width: min(560px, 100%);
+  mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
 }
 
 .heroPhone {
@@ -67,10 +87,51 @@
   width: 300px;
 }
 
+/* ---------- Works with ---------- */
+
+.worksWith {
+  padding-block: clamp(40px, 5vw, 64px) 0;
+}
+
+.worksWithInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-10);
+}
+
+.worksWithLabel {
+  font-size: var(--fs-callout);
+  font-weight: 600;
+  color: var(--text-faint);
+}
+
+.worksWithList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) clamp(24px, 4vw, 48px);
+}
+
+.worksWithList li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(1rem, 0.5vw + 0.85rem, 1.25rem);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.mark {
+  width: clamp(22px, 1.4vw + 12px, 30px);
+  height: clamp(22px, 1.4vw + 12px, 30px);
+  flex-shrink: 0;
+}
+
 /* ---------- Statement ---------- */
 
 .statement {
-  padding-block: var(--space-section);
+  padding-block: clamp(56px, 7vw, 104px) var(--space-section);
 }
 
 .statementText {
@@ -89,9 +150,6 @@
   font-weight: 700;
 }
 
-.statementAside {
-  color: var(--accent);
-}
 
 /* ---------- Scrolling story ---------- */
 
@@ -184,79 +242,196 @@
   color: #3dd598;
 }
 
-/* ---------- The app ---------- */
+/* ---------- Add it. Ask it. Read it. ---------- */
 
-.app {
-  padding-block: var(--space-section) 0;
-  overflow: hidden;
-  background: var(--bg-alt);
+.beats {
+  padding-bottom: var(--space-section);
 }
 
-.appHead {
+.beatsTitle {
+  font-size: var(--fs-hero);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.beatList {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: end;
-  gap: var(--space-8);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-10) clamp(24px, 4vw, 64px);
+  margin-block: clamp(48px, 6vw, 80px) var(--space-10);
 }
 
-.sectionTitle {
-  font-size: var(--fs-display);
-  letter-spacing: -0.03em;
-}
-
-.sectionLead {
-  max-width: 44ch;
+.beatList li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
   font-size: var(--fs-lead);
   line-height: 1.4;
   color: var(--text-muted);
 }
 
-/* Three phones, the middle one raised; all cut off by the section's bottom edge. */
-.phones {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(16px, 3vw, 48px);
-  margin-top: clamp(56px, 7vw, 96px);
-  margin-bottom: -120px;
+.beatPose {
+  height: 220px;
+  width: auto;
+  margin-bottom: var(--space-4);
 }
 
-.phoneItem {
+.beatTitle {
+  font-size: var(--fs-title2);
+  letter-spacing: -0.02em;
+}
+
+/* Two exchanges side by side on wide screens: on a call, and through the phone's assistant. */
+.exchanges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-16) clamp(32px, 6vw, 112px);
+  margin-top: clamp(56px, 8vw, 104px);
+}
+
+.exchanges .dialogue {
+  margin-top: 0;
+  gap: var(--space-8);
+}
+
+.exchanges .said {
+  font-size: clamp(1.625rem, 2.2vw + 0.75rem, 2.75rem);
+}
+
+.assistDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3dd598;
+}
+
+/* ---------- One place for every conversation ---------- */
+
+.channels {
+  padding-block: var(--space-section);
+}
+
+.channelsGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(40px, 6vw, 112px);
+}
+
+.channelsCopy {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* The channels as huge words: today's in full colour, the next ones quiet. */
+.channelList li {
+  display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding-top: 80px;
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: clamp(2.5rem, 4.4vw + 0.5rem, 4.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  color: var(--text-faint);
+  opacity: 0.55;
 }
 
-.phoneItem figcaption {
+.channelList .channelNow {
+  color: var(--text);
+  opacity: 1;
+}
+
+.channelMark {
+  flex-shrink: 0;
+  width: 0.72em;
+  height: 0.72em;
+}
+
+.channelState {
+  font-family: var(--font-body), system-ui, sans-serif;
   font-size: var(--fs-footnote);
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0;
   color: var(--text-faint);
 }
 
-.phoneRaised {
-  padding-top: 0;
+.channelNow .channelMark {
+  flex-shrink: 0;
+  width: 0.72em;
+  height: 0.72em;
+}
+
+.channelState {
+  color: var(--accent);
+}
+
+/* ---------- The app ---------- */
+
+.app {
+  padding-top: var(--space-section);
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(24px, 4vw, 64px);
+  margin-top: clamp(48px, 6vw, 80px);
+}
+
+.tabs li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tabName {
+  font-size: var(--fs-title2);
+  letter-spacing: -0.02em;
+}
+
+.tabText {
+  max-width: 30ch;
+  font-size: var(--fs-callout);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+/* Only the top of each phone shows — where the content is — cut by the section's edge. */
+.crop {
+  height: clamp(360px, 34vw, 500px);
+  margin-top: var(--space-6);
+  overflow: hidden;
+}
+
+/* The middle phone stands a little taller. */
+.tabMain .crop {
+  height: clamp(420px, 40vw, 580px);
 }
 
 /* ---------- Control ---------- */
 
 .control {
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
   background: var(--cream);
 }
 
 .controlGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  align-items: end;
   gap: var(--space-8);
 }
 
-.controlMascot {
-  width: min(520px, 100%);
-  margin-left: -6%;
+.controlPose {
+  justify-self: center;
+  height: clamp(320px, 34vw, 460px);
+  width: auto;
+  margin-bottom: var(--space-12);
 }
 
 .controlCopy {
@@ -264,7 +439,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-5);
-  padding-block: var(--space-16);
+  padding-block: var(--space-section);
   font-size: var(--fs-lead);
   line-height: 1.45;
   color: var(--text-muted);
@@ -277,6 +452,21 @@
 .controlCopy strong {
   color: var(--text);
   font-weight: 600;
+}
+
+/* ---------- From the blog ---------- */
+
+.blog {
+  padding-block: var(--space-section) 0;
+}
+
+.blogHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
 }
 
 /* ---------- Closing ---------- */
@@ -313,18 +503,14 @@
   letter-spacing: -0.035em;
 }
 
-.closingLinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-6);
-}
 
 /* ---------- Narrow screens ---------- */
 
 @media (max-width: 900px) {
   .heroGrid,
-  .appHead,
-  .controlGrid {
+  .controlGrid,
+  .channelsGrid,
+  .exchanges {
     grid-template-columns: 1fr;
   }
 
@@ -352,27 +538,59 @@
     width: 260px;
   }
 
-  .phones {
-    grid-template-columns: minmax(0, 300px);
-    justify-content: center;
+  .beatList {
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
   }
 
-  /* One phone is enough on a phone. */
-  .phoneItem:not(.phoneRaised) {
-    display: none;
+  /* Pose beside its words instead of above them. */
+  .beatList li {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    align-content: center;
+    align-items: start;
+    column-gap: var(--space-5);
+    row-gap: var(--space-1);
   }
 
-  .phoneItem {
-    padding-top: 0;
+  .beatPose {
+    grid-row: 1 / span 2;
+    align-self: center;
+    height: 140px;
+    margin: 0;
   }
 
-  .controlMascot {
-    width: 80%;
-    margin: 0 auto -8%;
+  .beatTitle {
+    grid-column: 2;
+    align-self: end;
+  }
+
+  .beatList li p {
+    grid-column: 2;
+    font-size: var(--fs-callout);
+  }
+
+  /* One phone in the app section: Calls. */
+  .tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .tabSide {
+    display: none !important;
+  }
+
+  .tabMain .crop {
+    height: 420px;
+    max-width: 300px;
+  }
+
+  .controlPose {
+    height: 240px;
+    margin: var(--space-12) 0 0;
   }
 
   .controlCopy {
-    padding-top: 0;
+    padding-top: var(--space-8);
   }
 
   .closingInner {

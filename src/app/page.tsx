@@ -4,24 +4,31 @@ import Image from "next/image";
 import { DownloadButtons } from "@/components/DownloadButtons";
 import { JsonLd } from "@/components/JsonLd";
 import { Button } from "@/components/Button";
-import { Mascot } from "@/components/home/Mascot";
 import {
-  AssistantPhone,
   CallsPhone,
   ChatsPhone,
+  DeadlinesPhone,
+  GroupSummaryPhone,
+  HighlightsPhone,
   LiveCallPhone,
-  SummaryPhone,
+  ReplyPhone,
+  ScreenshotPhone,
   TodayPhone,
   VoiceNotePhone,
 } from "@/components/home/mockups";
 import { StickyStory, type Chapter } from "@/components/home/StickyStory";
+import { Pose } from "@/components/brand/Pose";
+import { Mascot } from "@/components/home/Mascot";
+import { BrandMark } from "@/components/brand/BrandMark";
+import { PostList } from "@/components/blog/PostList";
+import { getAllPosts } from "@/lib/blog";
 import { absoluteUrl, site } from "@/lib/site";
 
 import styles from "./page.module.css";
 
-const title = "Clippy — The assistant inside your WhatsApp calls";
+const title = "Clippy — Your companion for WhatsApp";
 const description =
-  "Clippy joins your WhatsApp calls, transcribes who said what, answers when you ask, and turns voice notes into text. Free on iPhone and Android.";
+  "Clippy summarizes busy groups, drafts replies, catches deadlines, reads screenshots, joins your calls and shows what matters first. Free on iPhone and Android.";
 
 export const metadata: Metadata = {
   title: { absolute: title },
@@ -61,161 +68,293 @@ const appLd = {
 
 const chapters: Chapter[] = [
   {
-    id: "transcript",
-    title: "Every word, with a name on it.",
+    id: "groups",
+    title: "Busy groups, in a paragraph.",
     body: (
       <p>
-        Add Clippy to a WhatsApp call and the transcript starts writing itself, line by line, labelled by who said it.{" "}
-        <strong>Follow along live in the app</strong>, or read it later.
+        Come back to 142 messages and read five lines instead. Clippy sums up what was decided, and{" "}
+        <strong>points out the one question that needs you</strong>.
+      </p>
+    ),
+    screen: <GroupSummaryPhone />,
+  },
+  {
+    id: "replies",
+    title: "Replies, ready when you are.",
+    body: (
+      <p>
+        Clippy drafts replies from what was actually said — in the chat, on last week’s call, in the screenshot you
+        saved. <strong>You pick one, tweak it, send it.</strong>
+      </p>
+    ),
+    screen: <ReplyPhone />,
+  },
+  {
+    id: "deadlines",
+    title: "Deadlines don’t slip.",
+    body: (
+      <p>
+        “Can you send it by Friday?” becomes a deadline the moment someone types it. Clippy pulls dates from your chats,
+        calls, screenshots and calendar, and <strong>nudges you before they’re due</strong>.
+      </p>
+    ),
+    screen: <DeadlinesPhone />,
+  },
+  {
+    id: "screenshots",
+    title: "Screenshots that remember.",
+    body: (
+      <p>
+        Boarding passes, receipts, addresses, a message someone sent you. Clippy reads your screenshots and{" "}
+        <strong>notes what matters</strong>, so the details are there when you need them.
+      </p>
+    ),
+    screen: <ScreenshotPhone />,
+  },
+  {
+    id: "calls",
+    title: "Calls, written down.",
+    body: (
+      <p>
+        Add Clippy to a WhatsApp call and the transcript writes itself, labelled by who said it. When you hang up,{" "}
+        <strong>a short summary is waiting</strong>.
       </p>
     ),
     screen: <LiveCallPhone />,
-  },
-  {
-    id: "summary",
-    title: "Checked again when you hang up.",
-    body: (
-      <p>
-        After the call, Clippy goes back over the recording for a cleaner transcript, then writes{" "}
-        <strong>what was decided and who’s doing what next</strong>. If the audio was too poor, it says so instead of
-        guessing.
-      </p>
-    ),
-    screen: <SummaryPhone />,
   },
   {
     id: "voice-notes",
     title: "Voice notes you can read.",
     body: (
       <p>
-        Forward a voice note to Clippy and <strong>get it back as text</strong>. Catch up in a meeting, on a train, or
-        anywhere you can’t play audio.
+        Forward a voice note and <strong>get it back as text</strong>. Catch up in a meeting, on a train, or anywhere
+        you can’t play audio.
       </p>
     ),
     screen: <VoiceNotePhone />,
   },
-  {
-    id: "messages",
-    title: "Or just text it.",
-    body: (
-      <p>
-        Clippy is a WhatsApp contact like any other. <strong>Ask it to draft a reply</strong>, check a detail from last
-        week’s call, or think something through.
-      </p>
-    ),
-    screen: <AssistantPhone />,
-  },
+];
+
+/** Three beats, each with Clippy acting it out. */
+const beats = [
+  { pose: "welcome", title: "Add it to a call", text: "Tap Add participant in any WhatsApp call and choose Clippy." },
+  { pose: "curious", title: "Ask it anything", text: "Say “Clippy” and a question. It answers out loud, in the call." },
+  { pose: "happy", title: "Read it later", text: "The transcript and a short summary are waiting in the app." },
+] as const;
+
+/** The app's three tabs, each shown as the top of a phone screen. */
+const tabs = [
+  { name: "Today", text: "Your day at a glance: events, plans and the screenshots you saved." },
+  { name: "Calls", text: "Every transcript and summary, live or finished." },
+  { name: "Chats", text: "Your chats in one place, summarized, with replies ready." },
 ];
 
 export default function HomePage() {
+  const latest = getAllPosts().slice(0, 3);
+
   return (
     <>
-      {/* Hero: cream, the same colour as Clippy's render, so the mascot needs no frame. */}
+      {/* Hero: cream; Clippy behind with feathered edges, one iPhone in front cut off by the section edge. */}
       <section className={styles.hero}>
         <div className={`container-wide ${styles.heroGrid}`}>
           <div className={styles.heroCopy}>
-            <h1 className={styles.heroTitle}>The assistant that joins your WhatsApp calls.</h1>
+            <h1 className={styles.heroTitle}>Everything that matters in your chats. First.</h1>
             <p className={styles.heroLead}>
-              Clippy writes down who said what, answers when you ask it something, and turns voice notes into text.
+              Clippy is a companion for WhatsApp. It sums up busy groups, drafts your replies, catches deadlines, reads
+              your screenshots and joins your calls — then shows you what’s important.
             </p>
-            <DownloadButtons align="start" />
+            <DownloadButtons />
+            <p className={styles.heroNote}>Free on iPhone and Android. Works with Siri and Gemini.</p>
           </div>
           <div className={styles.heroArt}>
             <Mascot bare priority size={560} alt="Clippy, a friendly green character." className={styles.heroMascot} />
-            <LiveCallPhone className={styles.heroPhone} />
+            <HighlightsPhone device="iphone" className={styles.heroPhone} />
           </div>
+        </div>
+      </section>
+
+      {/* Familiar names: what Clippy already works with. Monochrome so it reads as "works with", not an endorsement. */}
+      <section className={styles.worksWith} aria-label="Works with">
+        <div className={`container-wide ${styles.worksWithInner}`}>
+          <p className={styles.worksWithLabel}>Works with</p>
+          <ul role="list" className={styles.worksWithList}>
+            <li>
+              <BrandMark name="whatsapp" className={styles.mark} />
+              WhatsApp
+            </li>
+            <li>
+              <BrandMark name="apple" className={styles.mark} />
+              Siri
+            </li>
+            <li>
+              <BrandMark name="gemini" className={styles.mark} />
+              Gemini
+            </li>
+            <li>
+              <BrandMark name="googleCalendar" className={styles.mark} />
+              Google Calendar
+            </li>
+            <li>
+              <BrandMark name="apple" className={styles.mark} />
+              Apple Calendar
+            </li>
+          </ul>
         </div>
       </section>
 
       {/* One sentence instead of three feature cards. */}
       <section className={styles.statement}>
         <p className={`container-wide ${styles.statementText}`}>
-          One WhatsApp contact that <strong>joins your calls</strong>, <strong>keeps the transcript</strong>,{" "}
-          <strong>answers out loud</strong> when you say its name, and <strong>reads your voice notes</strong> for you.
-          <span className={styles.statementAside}> Nothing to install for anyone else on the call.</span>
+          WhatsApp shows you everything. Clippy shows you <strong>what matters</strong>: the{" "}
+          <strong>decision in the group</strong>, the <strong>reply you owe</strong>, the{" "}
+          <strong>deadline on Friday</strong>, the <strong>gate on your boarding pass</strong>.
         </p>
+      </section>
+
+      {/* Add it. Ask it. Read it. — Clippy acts each one out. */}
+      <section className={styles.beats} aria-labelledby="beats-title">
+        <div className="container-wide">
+          <h2 id="beats-title" className={styles.beatsTitle}>
+            Add it. Ask it. <span className={styles.muted}>Read it.</span>
+          </h2>
+          <ol role="list" className={styles.beatList}>
+            {beats.map((b) => (
+              <li key={b.title}>
+                <Pose pose={b.pose} height={220} className={styles.beatPose} alt="" />
+                <h3 className={styles.beatTitle}>{b.title}</h3>
+                <p>{b.text}</p>
+              </li>
+            ))}
+          </ol>
+          <Button href="/how-it-works" variant="plain">
+            See how it works
+          </Button>
+        </div>
       </section>
 
       <section className={styles.story} aria-labelledby="story-title">
         <h2 id="story-title" className="visually-hidden">
           What Clippy does
         </h2>
-        <StickyStory chapters={chapters} />
+        {/* Phones only on wide screens; on a phone the chapters read as text. */}
+        <StickyStory chapters={chapters} inlineScreens={false} />
       </section>
 
-      {/* The one dark moment: the conversation itself is the picture. */}
-      <section className={styles.stage} aria-labelledby="say-its-name">
+      {/* The one dark moment: two conversations — on a call, and through the phone's own assistant. */}
+      <section className={styles.stage} aria-labelledby="just-ask">
         <div className="container-wide">
-          <h2 id="say-its-name" className={styles.stageTitle}>
-            Just say its name.
+          <h2 id="just-ask" className={styles.stageTitle}>
+            Just ask.
           </h2>
           <p className={styles.stageLead}>
-            Clippy stays quiet while you talk. Ask it something and it answers out loud, in the call, so everyone hears
-            the same thing.
+            In a call, say its name and it answers out loud. Anywhere else, ask Siri or Gemini and Clippy answers from
+            your chats, calls and calendar.
           </p>
 
-          <figure className={styles.dialogue}>
-            <figcaption className={styles.dialogueCaption}>
-              <span className={styles.liveDot} aria-hidden="true" />
-              Weekly planning, live
-            </figcaption>
-            <blockquote className={styles.utterance}>
-              <p className={styles.speaker}>Daniel</p>
-              <p className={styles.said}>“Clippy, what did we say the budget cap was last week?”</p>
-            </blockquote>
-            <blockquote className={`${styles.utterance} ${styles.reply}`}>
-              <p className={styles.speaker}>Clippy</p>
-              <p className={styles.said}>“Four thousand, with travel kept separate. You agreed on it last Tuesday.”</p>
-            </blockquote>
-          </figure>
+          <div className={styles.exchanges}>
+            <figure className={styles.dialogue}>
+              <figcaption className={styles.dialogueCaption}>
+                <span className={styles.liveDot} aria-hidden="true" />
+                On a WhatsApp call
+              </figcaption>
+              <blockquote className={styles.utterance}>
+                <p className={styles.speaker}>Daniel</p>
+                <p className={styles.said}>“Clippy, what did we say the budget cap was?”</p>
+              </blockquote>
+              <blockquote className={`${styles.utterance} ${styles.reply}`}>
+                <p className={styles.speaker}>Clippy</p>
+                <p className={styles.said}>“Four thousand, with travel kept separate.”</p>
+              </blockquote>
+            </figure>
+
+            <figure className={styles.dialogue}>
+              <figcaption className={styles.dialogueCaption}>
+                <span className={styles.assistDot} aria-hidden="true" />
+                With Siri or Gemini
+              </figcaption>
+              <blockquote className={styles.utterance}>
+                <p className={styles.speaker}>You</p>
+                <p className={styles.said}>“Ask Clippy what I missed in Family.”</p>
+              </blockquote>
+              <blockquote className={`${styles.utterance} ${styles.reply}`}>
+                <p className={styles.speaker}>Clippy</p>
+                <p className={styles.said}>“Lunch moved to Sunday at 1, and Ama needs the photos by Friday.”</p>
+              </blockquote>
+            </figure>
+          </div>
         </div>
       </section>
 
-      <section className={styles.app} aria-labelledby="app-title">
-        <div className="container-wide">
-          <div className={styles.appHead}>
-            <h2 id="app-title" className={styles.sectionTitle}>
-              Everything lands in the app.
+      {/* One place for every conversation: today WhatsApp, next email, Telegram and Slack. */}
+      <section className={styles.channels} aria-labelledby="channels-title">
+        <div className={`container-wide ${styles.channelsGrid}`}>
+          <div className={styles.channelsCopy}>
+            <h2 id="channels-title" className={styles.sectionTitle}>
+              One place for every conversation.
             </h2>
             <p className={styles.sectionLead}>
-              Today shows what’s coming up. Calls keeps every transcript and summary. Chats lets you link your own
-              WhatsApp and reply from one place.
+              Messages are scattered across apps, and the important ones get buried. Clippy keeps them together and
+              sorts them by what needs you, so nothing slips between apps.
             </p>
           </div>
-          <div className={styles.phones}>
-            <figure className={styles.phoneItem}>
-              <TodayPhone device="iphone" />
-              <figcaption>Today</figcaption>
-            </figure>
-            <figure className={`${styles.phoneItem} ${styles.phoneRaised}`}>
-              <CallsPhone />
-              <figcaption>Calls</figcaption>
-            </figure>
-            <figure className={styles.phoneItem}>
-              <ChatsPhone device="iphone" />
-              <figcaption>Chats</figcaption>
-            </figure>
-          </div>
+          <ul role="list" className={styles.channelList}>
+            <li className={styles.channelNow}>
+              <BrandMark name="whatsapp" tone="brand" className={styles.channelMark} />
+              WhatsApp <span className={styles.channelState}>Today</span>
+            </li>
+            <li>
+              <BrandMark name="gmail" className={styles.channelMark} />
+              Email <span className={styles.channelState}>Next</span>
+            </li>
+            <li>
+              <BrandMark name="telegram" className={styles.channelMark} />
+              Telegram <span className={styles.channelState}>Next</span>
+            </li>
+            <li>
+              <BrandMark name="chat" className={styles.channelMark} />
+              Slack <span className={styles.channelState}>Next</span>
+            </li>
+          </ul>
         </div>
       </section>
 
-      {/* Cream again, so the mascot sits on the page with no panel. */}
+      {/* The app: three tabs, each labelled, phones cropped at the section edge so only their content shows. */}
+      <section className={styles.app} aria-labelledby="app-title">
+        <div className="container-wide">
+          <h2 id="app-title" className={styles.sectionTitle}>
+            Everything lands in the app.
+          </h2>
+          <ul role="list" className={styles.tabs}>
+            {tabs.map((t, i) => (
+              <li key={t.name} className={i === 1 ? styles.tabMain : styles.tabSide}>
+                <h3 className={styles.tabName}>{t.name}</h3>
+                <p className={styles.tabText}>{t.text}</p>
+                <div className={styles.crop}>
+                  {i === 0 ? <TodayPhone device="iphone" /> : i === 1 ? <CallsPhone /> : <ChatsPhone device="iphone" />}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Cream again: Clippy listening, beside who gets to bring it in. */}
       <section className={styles.control} aria-labelledby="control-title">
         <div className={`container-wide ${styles.controlGrid}`}>
-          <Mascot bare size={520} alt="Clippy, thinking with a hand on its chin." className={styles.controlMascot} />
+          <Pose pose="listening" height={460} className={styles.controlPose} alt="" />
           <div className={styles.controlCopy}>
             <h2 id="control-title" className={styles.sectionTitle}>
-              You decide who it listens to.
+              You decide what it sees.
             </h2>
             <p>
-              <strong>Only people you approve</strong> can bring Clippy into a call. Anyone else is turned away.
+              <strong>You choose the chats.</strong> Clippy only reads the conversations you pick, and you can change
+              that any time.
             </p>
             <p>
-              <strong>It always introduces itself</strong>, so everyone on the call knows it’s there before anything is
-              written down.
+              <strong>Calendar and screenshots stay opt-in.</strong> Nothing is read until you allow it on your phone.
             </p>
             <p>
-              <strong>Linking your own WhatsApp is optional</strong>, and you choose which chats appear in the app.
+              <strong>On calls, it introduces itself</strong>, and only people you approve can bring it in.
             </p>
             <Button href="/privacy" variant="plain">
               How Clippy handles your data
@@ -224,22 +363,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {latest.length > 0 ? (
+        <section className={styles.blog} aria-labelledby="blog-title">
+          <div className="container-wide">
+            <div className={styles.blogHead}>
+              <h2 id="blog-title" className={styles.sectionTitle}>
+                From the blog.
+              </h2>
+              <Button href="/blog" variant="plain">
+                All posts
+              </Button>
+            </div>
+            <PostList posts={latest} />
+          </div>
+        </section>
+      ) : null}
+
       <section className={styles.closing} aria-labelledby="closing-title">
         <div className={`container-wide ${styles.closingInner}`}>
           <div className={styles.closingCopy}>
             <h2 id="closing-title" className={styles.closingTitle}>
-              Bring Clippy to your next call.
+              Let Clippy keep up for you.
             </h2>
             <p className={styles.sectionLead}>Free on iPhone and Android.</p>
-            <DownloadButtons align="start" showNote={false} />
-            <p className={styles.closingLinks}>
-              <Button href="/how-it-works" variant="plain">
-                See how it works
-              </Button>
-              <Button href="/blog" variant="plain">
-                Read the blog
-              </Button>
-            </p>
+            <DownloadButtons />
           </div>
           <Image
             src="/brand/clippy-icon.png"

@@ -606,3 +606,263 @@ export function AssistantPhone({ className, device }: PhoneProps) {
     </PhoneFrame>
   );
 }
+
+/* ---------- Companion screens: what matters, groups, replies, deadlines, screenshots ---------- */
+
+type TagTone = "deadline" | "reply" | "event" | "note";
+
+function Tag({ tone, children }: { tone: TagTone; children: ReactNode }) {
+  return <span className={`${styles.tag} ${styles[`tag_${tone}`]}`}>{children}</span>;
+}
+
+function Initial({ letter, tone }: { letter: string; tone: Tone }) {
+  return <span className={`${styles.avatar} ${styles.avatarSm} ${styles[tone]}`}>{letter}</span>;
+}
+
+/** Today: everything across your chats that needs you, first. */
+export function HighlightsPhone({ className, device }: PhoneProps) {
+  return (
+    <PhoneFrame
+      className={className}
+      device={device}
+      label="The Today screen in Clippy: a deadline and a reply waiting at the top, then summaries of a busy family group, a saved screenshot and a finished call."
+    >
+      <div className={styles.screenBody}>
+        <div>
+          <p className={styles.largeTitle}>Today</p>
+          <p className={styles.screenMeta}>Thursday, 21 November</p>
+        </div>
+        <p className={styles.sectionLabel}>Needs you</p>
+        <div className={styles.group}>
+          <div className={styles.hl}>
+            <Tag tone="deadline">Due Friday</Tag>
+            <span className={styles.rowTitle}>Send the holiday photos to Ama</span>
+            <span className={styles.rowSub}>From Family</span>
+          </div>
+          <div className={styles.hl}>
+            <Tag tone="reply">Reply drafted</Tag>
+            <span className={styles.rowTitle}>Daniel asked if 4,000 works</span>
+            <span className={styles.rowSub}>From Design team</span>
+          </div>
+        </div>
+        <p className={styles.sectionLabel}>Catch up</p>
+        <div className={styles.group}>
+          <div className={styles.row}>
+            <Initial letter="F" tone="rose" />
+            <span>
+              <span className={styles.rowTitle}>Family · 142 new</span>
+              <span className={styles.rowText}>Lunch moved to Sunday at 1. Bring a dessert.</span>
+            </span>
+          </div>
+          <div className={styles.row}>
+            <Initial letter="S" tone="slate" />
+            <span>
+              <span className={styles.rowTitle}>Screenshot saved</span>
+              <span className={styles.rowText}>Flight LH 912, Tue 07:40, gate B12</span>
+            </span>
+          </div>
+          <div className={styles.row}>
+            <Avatar person="clippy" size="sm" />
+            <span>
+              <span className={styles.rowTitle}>Weekly planning</span>
+              <span className={styles.rowText}>Call summary ready · 3 next steps</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <TabBar active="Today" />
+    </PhoneFrame>
+  );
+}
+
+/** A busy group, boiled down. */
+export function GroupSummaryPhone({ className, device }: PhoneProps) {
+  return (
+    <PhoneFrame
+      className={className}
+      device={device}
+      label="A WhatsApp group called Family with 142 new messages. Clippy's summary: lunch moved to Sunday at 1, everyone brings a dessert, and Ama needs the holiday photos by Friday. One question needs you."
+    >
+      <div className={styles.screenBody}>
+        <div className={styles.chatHeader}>
+          <Initial letter="F" tone="rose" />
+          <div>
+            <p className={styles.chatName}>Family</p>
+            <p className={styles.muted}>142 new messages</p>
+          </div>
+        </div>
+        <div className={styles.digest}>
+          <p className={styles.digestLabel}>
+            <Avatar person="clippy" size="sm" />
+            Summary from Clippy
+          </p>
+          <ul className={styles.digestList}>
+            <li>Lunch moved to Sunday at 1, at Mum’s.</li>
+            <li>Everyone brings a dessert. Sam is doing the cake.</li>
+            <li>Ama needs the holiday photos by Friday.</li>
+          </ul>
+          <p className={styles.digestAsk}>
+            <strong>Needs you:</strong> Ama asked who has the beach photos.
+          </p>
+        </div>
+        <div className={`${styles.chat} ${styles.chatFill}`}>
+          <div className={`${styles.bubble} ${styles.in}`}>
+            <p>
+              <strong>Ama</strong> Who has the beach photos?
+            </p>
+            <p className={styles.bubbleMeta}>
+              <span className="tabular">18:42</span>
+            </p>
+          </div>
+        </div>
+        <div className={styles.composer}>
+          <span>Message</span>
+          <span className={styles.send} />
+        </div>
+      </div>
+    </PhoneFrame>
+  );
+}
+
+/** Replies drafted from the conversation's own context. */
+export function ReplyPhone({ className, device }: PhoneProps) {
+  return (
+    <PhoneFrame
+      className={className}
+      device={device}
+      label="A chat with Daniel, who asks if 4,000 works for the budget. Clippy suggests three replies, the first using what was agreed on Tuesday's call."
+    >
+      <div className={styles.screenBody}>
+        <div className={styles.chatHeader}>
+          <Avatar person={daniel} />
+          <div>
+            <p className={styles.chatName}>Daniel</p>
+            <p className={styles.muted}>online</p>
+          </div>
+        </div>
+        <div className={`${styles.chat} ${styles.chatFill}`}>
+          <div className={`${styles.bubble} ${styles.in}`}>
+            <p>Does 4,000 work for the budget, or do we need more?</p>
+            <p className={styles.bubbleMeta}>
+              <span className="tabular">10:12</span>
+            </p>
+          </div>
+        </div>
+        <div className={styles.suggest}>
+          <p className={styles.digestLabel}>
+            <Avatar person="clippy" size="sm" />
+            Suggested replies
+          </p>
+          <span className={`${styles.chip} ${styles.chipMain}`}>
+            4,000 works. Travel stays separate, like we agreed on Tuesday.
+          </span>
+          <span className={styles.chip}>Could we stretch to 4,200?</span>
+          <span className={styles.chip}>Let me check and reply tonight.</span>
+        </div>
+        <div className={styles.composer}>
+          <span>4,000 works. Travel stays separate…</span>
+          <span className={styles.send} />
+        </div>
+      </div>
+    </PhoneFrame>
+  );
+}
+
+/** Deadlines pulled from chats, screenshots and the calendar — with a nudge before they slip. */
+export function DeadlinesPhone({ className, device }: PhoneProps) {
+  return (
+    <PhoneFrame
+      className={className}
+      device={device}
+      label="A Clippy reminder: send final numbers to Ama in 2 hours. Below, a Coming up list of deadlines found in chats, a screenshot and the calendar."
+    >
+      <div className={styles.screenBody}>
+        <div className={styles.banner}>
+          <Avatar person="clippy" size="sm" />
+          <span>
+            <span className={styles.bannerTop}>
+              <strong>Clippy</strong>
+              <span>in 2 hours</span>
+            </span>
+            <span className={styles.bannerText}>Send final numbers to Ama. You promised them in Design team.</span>
+          </span>
+        </div>
+        <p className={styles.largeTitle}>Coming up</p>
+        <div className={styles.group}>
+          {[
+            ["16:00", "Send final numbers", "Design team chat", "deadline", "Today"],
+            ["Fri", "Holiday photos to Ama", "Family chat", "deadline", "Chat"],
+            ["Sat", "Plumber, 9 to 11", "Call with landlord", "event", "Call"],
+            ["Mon", "Dentist, 08:30", "Calendar", "event", "Calendar"],
+            ["Tue", "Flight LH 912", "Screenshot", "note", "Screenshot"],
+          ].map(([when, title, from, tone, tag]) => (
+            <div key={title} className={styles.row}>
+              <span className={styles.rowTime}>{when}</span>
+              <span>
+                <span className={styles.rowTitle}>{title}</span>
+                <span className={styles.rowSub}>
+                  <Tag tone={tone as TagTone}>{tag}</Tag>
+                  {from}
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </PhoneFrame>
+  );
+}
+
+/** A screenshot, read and filed. */
+export function ScreenshotPhone({ className, device }: PhoneProps) {
+  return (
+    <PhoneFrame
+      className={className}
+      device={device}
+      label="A boarding pass screenshot. Clippy noted the flight, departure time and gate, and added it to Today and the calendar."
+    >
+      <div className={styles.screenBody}>
+        <p className={styles.largeTitle}>Screenshot</p>
+        <div className={styles.pass} aria-hidden="true">
+          <span className={styles.passTop}>
+            <span>Boarding pass</span>
+            <span>LH 912</span>
+          </span>
+          <span className={styles.passRoute}>
+            <span>FRA</span>
+            <span className={styles.passArrow} />
+            <span>ACC</span>
+          </span>
+          <span className={styles.passGrid}>
+            <span>
+              <small>Date</small>Tue 26 Nov
+            </span>
+            <span>
+              <small>Departs</small>07:40
+            </span>
+            <span>
+              <small>Gate</small>B12
+            </span>
+            <span>
+              <small>Seat</small>14C
+            </span>
+          </span>
+        </div>
+        <div className={styles.digest}>
+          <p className={styles.digestLabel}>
+            <Avatar person="clippy" size="sm" />
+            Clippy noted
+          </p>
+          <ul className={styles.digestList}>
+            <li>Flight LH 912 to Accra, Tue 26 Nov at 07:40.</li>
+            <li>Gate B12, seat 14C. Boarding closes 07:20.</li>
+          </ul>
+          <p className={styles.checked}>
+            <CheckIcon />
+            Added to Today and your calendar
+          </p>
+        </div>
+      </div>
+    </PhoneFrame>
+  );
+}
